@@ -1,0 +1,79 @@
+  <div class="row">
+    <label><strong>Buy a Tradeable-Wallet</strong></label>
+  </div>
+
+  <div class="row">
+    <label>Selected Ethereum Account:
+      <input type="text" [ngModel]="selectedAccount" readonly disabled size="50">
+    </label>
+  </div>
+    <div class="row">
+    <label>Enter the address of the Tradeable Wallet you want to buy:
+      <input type="text" [(ngModel)]="tradeableWalletAddress" (ngModelChange)="getPriceAndDescription()"  placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+    </label>
+  </div>
+   <div class="row">
+    <label>Price of this Tradeable Wallet (in GWei):
+      <input type="text" [ngModel]="priceInGWei" readonly disabled maxlength="20" size="10">
+    </label>
+  </div>
+   <div class="row">
+    <label>Price of this Tradeable Wallet (in Ether):
+      <input type="text" [ngModel]="convertPriceToETH()" readonly disabled maxlength="20" size="10">
+    </label>
+  </div>
+    <div class="row"><small>Obs.: This is the total you need to pay. The seller is going to pay {{percentualFee}}% fee.</small>
+    </div>
+
+  <div class="row">
+    <label>The owner described you should buy this wallet because:
+    </label>
+  </div>
+  <div class="row">
+      <textarea [ngModel]="description" readonly disabled rows="3" cols="100"></textarea>
+  </div>
+
+    <div class="row" *ngIf="tradeableWalletAddress">
+    <label>See all owners in the lifecycle of this Tradeable-Wallet <a routerLink="/all-owners/{{tradeableWalletAddress}}" target="_blank">
+      <i class="fa fa-search" aria-hidden="true"></i></a></label>
+  </div>
+
+  <div class="row" style="display:flex; align-items: center;" >
+    <input type="checkbox"  id="termsOfService" [(ngModel)]="isTermsOfServiceChecked">
+    <label for="termsOfService">&nbsp;I agree with Terms of Service</label>
+  </div>
+  
+
+    <div class="row">
+    <label>Buy this Tradeable-Wallet by clicking here <a href="javascript:void(0)" (click)="buy()">
+      <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
+  </div>
+
+
+    <div class="row" *ngIf="newBuyHash">
+      <div class="card bg-light">
+      <label>See your transaction on EtherScan by using this hash: {{newBuyHash.transactionHash}}
+      </label>
+     </div>
+  </div>
+
+    <div class="row" *ngIf="error">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+            <h5 class="card-title">Ops... Error</h5>
+            <p class="card-text">If you approved the transaction on Metamask, be sure that your account has enough Ether to pay the price of the Tradeable-Wallet and the gas cost.</p>
+            <p class="card-text">Also, be sure that the address you provided is a really a Tradeable Wallet and his owner is selling it.</p>
+            <p class="card-text">Details: {{errorBack}}</p>
+          </div>
+      </div>
+    </div> 
+
+     <div class="row" *ngIf="errorFront">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+            <p class="card-text">{{errorFront}}</p>
+          </div>
+      </div>
+    </div>     
+        
+

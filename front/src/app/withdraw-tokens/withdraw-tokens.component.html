@@ -1,0 +1,74 @@
+<div class="row">
+    <label><strong>Withdraw your Tokens</strong></label>
+  </div>
+
+  <div class="row">
+    <label>Selected Ethereum Account:
+      <input type="text" [ngModel]="selectedAccount" readonly disabled size="50">
+    </label>
+  </div>
+    <div class="row">
+    <label>Enter the address of your Tradeable Wallet:
+      <input type="text" [(ngModel)]="tradeableWalletAddress" (ngModelChange)="getWalletInfo()" placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+    </label>
+  </div>
+    <div class="row">
+    <label>Enter the address ERC-20 Tokens:
+      <input type="text" [(ngModel)]="tokensAddress"  (ngModelChange)="getTokensBalance()" placeholder="ex.: 0x5A4865076BCF3A5357C56E395AB970B5B5409847" maxlength="42" size="50">
+    </label>
+  </div>
+
+   <div class="row">
+    <label>Balance:
+      <input type="number" [ngModel]="sBalance" maxlength="20" size="10" readonly disabled>
+    </label>
+  </div>
+
+   <div class="row">
+    <label>Enter the number of ERC-20 tokens to Withdraw:
+      <input type="number" [(ngModel)]="numberOfTokens"  maxlength="20" size="10">
+    </label>
+  </div>
+
+    <div class="row" *ngIf="tradeableWalletAddress">
+    <label>See all historic withdraws of this wallet <a routerLink="/all-withdraw/{{tradeableWalletAddress}}" target="_blank">
+      <i class="fa fa-search" aria-hidden="true"></i></a></label>
+    </div>
+
+  <div class="row" style="display:flex; align-items: center;" >
+    <input type="checkbox"  id="termsOfService" [(ngModel)]="isTermsOfServiceChecked">
+    <label for="termsOfService">&nbsp;I agree with Terms of Service</label>
+  </div>
+
+    <div class="row">
+    <label>Transfer your ERC-20 tokens from your tradeable wallet to the selected account by clicking here <a href="javascript:void(0)" (click)="withdrawTokens()">
+      <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
+  </div>
+
+    <div class="row" *ngIf="newWithdrawHash">
+    <div class="card bg-light">
+    <label>See your transaction on EtherScan by using this hash: {{newWithdrawHash.transactionHash}}
+      </label>
+      </div>
+    </div>     
+
+    <div class="row" *ngIf="errorBack">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+            <h5 class="card-title">Ops... Error</h5>
+            <p class="card-text">If you approved the transaction on Metamask, be sure that you provided a correct address of a Tradeable-Wallet and your are the owner of it.</p>
+            <p class="card-text">Also, be sure that you provided the correct address of the ERC-20 tokens and you have enough tokens there.</p> 
+            <p class="card-text">It could also be that you are trying to withdraw when the wallet is available to sell or the user has just removed its offer.</p>
+            <p class="card-text">Finally, be sure your account has enough Ether to pay the gas cost.</p>
+            <p class="card-text">Details: {{errorBack}}</p>
+          </div>
+      </div>
+    </div>     
+
+     <div class="row" *ngIf="errorFront">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+            <p class="card-text">{{errorFront}}</p>
+          </div>
+      </div>
+    </div>     

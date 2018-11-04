@@ -1,0 +1,57 @@
+<div class="container">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+
+<div class="btn-group">
+
+  <button class="btn btn-secondary dropdown-toggle btn btn-lg btn-success" type="button" id="dropdownAcquire" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-magic fa-2x pull-left"></i>Acquire your Wallet
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownAcquire">
+    <a class="dropdown-item" href="new-wallet">Create new Wallet</a>
+    <a class="dropdown-item" href="buy-wallet">Buy a Wallet</a>
+  </div>
+
+</div>
+
+<div class="btn-group">
+
+  <button class="btn btn-secondary dropdown-toggle btn btn-lg btn-success" type="button" id="dropdownManage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa fa-pencil-square-o fa-2x pull-left"></i>Manage your Wallet
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownManage">
+    <a class="dropdown-item" href="withdraw-eth">Withdraw Ethers</a>
+    <a class="dropdown-item" href="send-eth">Send Ethers</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="withdraw-tokens">Withdraw Tokens</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="sell-wallet">Put your Wallet for Sale</a>
+    <a class="dropdown-item" href="cancel-selling">Cancel Sale Offer</a>
+  </div>
+</div>
+
+
+<!--
+  <a class="btn btn-lg btn-success" href="new-wallet">
+    <i class="fa fa-magic fa-2x pull-left"></i> Create new wallet
+  </a>
+  <a class="btn btn-lg btn-success" href="withdraw-tokens">
+    <i class="fa fa fa-share-square-o fa-2x pull-left"></i> Withdraw your tokens
+  </a>
+  <a class="btn btn-lg btn-success" href="sell-wallet">
+    <i class="fa fa-pencil-square-o fa-2x pull-left"></i> Put your wallet for sale
+  </a>
+  <a class="btn btn-lg btn-success" href="buy-wallet">
+    <i class="fa fa-rocket fa-2x pull-left"></i> Buy more wallets
+  </a>
+-->
+  <div style="margin-top:10px"></div>
+  
+  <div class = "container">
+    <router-outlet></router-outlet>
+  </div>
+
+  <span class="label label-info"></span>
+<small class="text-muted">You are on <strong>{{network}}</strong> network</small>
+</div>

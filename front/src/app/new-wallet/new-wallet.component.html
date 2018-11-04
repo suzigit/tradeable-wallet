@@ -1,0 +1,45 @@
+<div class="row">
+    <label><strong>Create New Tradeable-Wallet</strong></label>
+  </div>
+
+  <div class="row">
+    <label>Selected Ethereum Account:
+      <input type="text" [ngModel]="selectedAccount" readonly disabled size="50">
+    </label>
+  </div>
+
+  <div class="row" style="display:flex; align-items: center;" >
+    <input type="checkbox"  id="termsOfService" [(ngModel)]="isTermsOfServiceChecked">
+    <label for="termsOfService">&nbsp;I agree with Terms of Service</label>
+  </div>
+
+  <div class="row">
+    <label>Create a new tradeable wallet by clicking here <a href="javascript:void(0)" (click)="createWallet()">
+      <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
+  </div>
+
+  <div class="row" *ngIf="newTradeableWalletAddress">
+  <div class="card bg-light">
+    <label>Congratulations! You now have a new Tradeable-Wallet.</label>
+    <label>Take note of your wallet address: {{newTradeableWalletAddress}}</label>
+  </div>
+</div>
+    <div class="row" *ngIf="error">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+            <h5 class="card-title">Ops... Error</h5>
+            <p class="card-text">If you approved the transaction on Metamask, be sure that your account has enough Ether to pay the gas cost.</p>
+            <p class="card-text">Details: {{errorBack}}</p>
+          </div>
+      </div>
+    </div> 
+
+      <div class="row" *ngIf="errorFront">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+            <p class="card-text">{{errorFront}}</p>
+          </div>
+      </div>
+    </div>     
+       
+

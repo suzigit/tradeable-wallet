@@ -1,0 +1,77 @@
+ <div class="row">
+    <label><strong>Put your Tradeable-Wallet for Sale</strong></label>
+  </div>
+
+  <div class="row">
+    <label>Selected Ethereum Account:
+      <input type="text" [ngModel]="selectedAccount" readonly disabled size="50">
+    </label>
+  </div>
+    <div class="row">
+    <label>Enter the address of your Tradeable Wallet:
+      <input type="text" [(ngModel)]="tradeableWalletAddress" (ngModelChange)="getPercentualFee()" placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+    </label>
+  </div>
+   <div class="row">
+    <label>Enter the price of your Tradeable Wallet (in GWei):
+      <input type="number" [(ngModel)]="priceInGWei" maxlength="20" size="10">
+    </label>
+  </div>
+   <div class="row">
+    <label>Price of your Tradeable Wallet (in ETH):
+      <input type="number" [ngModel]="convertPriceToETH()" maxlength="20" size="10" readonly disabled>
+    </label>
+  </div>
+
+   <div class="row">  
+    <label>Describe why someone should buy your wallet (to be saved on IPFS):
+    </label>
+  </div>
+
+   <div class="row">
+      <textarea [(ngModel)]="description" rows="3" cols="100"></textarea><a href="javascript:void(0)" (click)="saveDescription()">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i></a>
+  </div>
+
+   <div class="row">
+      <span *ngIf="hashDescription">Hash to be saved on blockchain when you put your wallet for sale: {{hashDescription}}</span>
+      <span *ngIf="errorSaveDescription">Error: {{errorSaveDescription}}</span>
+  </div>
+
+  <div class="row" style="display:flex; align-items: center;" >
+    <input type="checkbox"  id="termsOfService" [(ngModel)]="isTermsOfServiceChecked">
+    <label for="termsOfService">&nbsp;I agree with Terms of Service</label>
+  </div>
+  
+
+ <div class="row">
+    <label>Put your Tradeable-Wallet for sale and agree to automatically discount {{percentualFee}}% fee from the price in the moment of the trade by clicking here <a href="javascript:void(0)" (click)="sale()">
+      <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
+  </div>
+
+
+  <div class="row" *ngIf="newSellHash">
+    <div class="card bg-light">
+    <label>See your transaction on EtherScan by using this hash: {{newSellHash.transactionHash}}
+      </label>
+      </div>
+  </div>     
+
+    <div class="row" *ngIf="errorBack">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+            <h5 class="card-title">Ops... Error</h5>
+            <p class="card-text">If you approved the transaction on Metamask, be sure that you provided a correct address of a Tradeable-Wallet and your are the owner of it.</p>
+            <p class="card-text">Also, be sure your account has enough Ether to pay the gas cost.</p>
+            <p class="card-text">Details: {{errorBack}}</p>
+          </div>
+      </div>
+    </div>     
+
+    <div class="row" *ngIf="errorFront">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+            <p class="card-text">{{errorFront}}</p>
+          </div>
+      </div>
+    </div>     

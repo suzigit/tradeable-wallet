@@ -1,0 +1,45 @@
+<h5>Tradeable Wallet Withdraws - {{address}} </h5>
+
+<input *ngIf="events && events.length > 0" class="form-control barra-filtro" type="text" name="search" [(ngModel)]="filter" placeholder="Filter">
+
+
+<div class="table-responsive-md">
+<table class="table table-striped table-bordered table-sm">
+    <thead>
+    <tr *ngIf="events && events.length > 0">
+      <th [class.active]="order === 'tokenaddr'" (click)="setOrder('tokenaddr')">Token Address
+        <span [hidden]="reverse">▼</span><span [hidden]="!reverse">▲</span>
+      </th>
+      <th [class.active]="order === 'owner'" (click)="setOrder('owner')">Owner
+        <span [hidden]="reverse">▼</span><span [hidden]="!reverse">▲</span>
+      </th>
+      <th [class.active]="order === 'value'" (click)="setOrder('value')">Value
+        <span [hidden]="reverse">▼</span><span [hidden]="!reverse">▲</span>
+      </th>
+      <th [class.active]="order === 'sucess'" (click)="setOrder('sucess')">Sucess
+        <span [hidden]="reverse">▼</span><span [hidden]="!reverse">▲</span>
+      </th>
+      <th [class.active]="order === 'dateTime'" (click)="setOrder('dateTime')">Date/Time
+        <span [hidden]="reverse">▼</span><span [hidden]="!reverse">▲</span>
+      </th>
+      <th>HashId</th>
+    </tr>
+    </thead>
+
+
+    <tbody>
+    <tr *ngFor="let event of events; let i = index">
+      <td>{{event.returnValues.tokenAddr}}</td>
+      <td>{{event.returnValues.owner}}</td>
+      <td>{{event.returnValues.value}}</td>
+      <td>{{event.returnValues.sucess}}</td>
+      <td>{{event.dateTime | date: 'dd/MM/yyyy hh:mm a' }}</td>
+      <td style="text-align:center;">
+        <a href="https://rinkeby.etherscan.io/tx/{{event.transactionHash}}"><i class="fa fa-link" aria-hidden="true"></i></a>
+      </td>
+    </tr>
+  </tbody>
+
+
+</table>
+</div>

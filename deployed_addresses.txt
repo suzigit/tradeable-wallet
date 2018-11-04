@@ -1,0 +1,39 @@
+This doc describes where the Tradeable Wallet contracts live on the test net (Rinkeby):
+
+* Contract Creator: 0xaa5722e8413680c1e250c40731fe4d8445494618
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0x275d37784b16b66bf7dec27fa7a3ebc647ebe6bdd2e1670085f0b26ae07e7699
+Owner: 0xe4aaa0fc768fbbafaa15f3cf16530b1d082a95b0
+
+
+* TokenERC20_Mock: 0xf0df2a9712305a5e53244eba2a785e12f1cef8b3
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0x0c9f194c4aeaf2f28c6ccdbd47703c4c855c018310a795ed767ea46182fbf170
+This symbol is MOCK.
+Owner: 0x3190aeb50f4a42d62526b144708ad4919829d236
+This Mock is used during the test of withdraw functionality.
+For this test, you can also use the address of any ERC20 token that you know at testnet.
+It was tracked by EtherScan as a valid token: https://rinkeby.etherscan.io/token/0xf0df2a9712305a5e53244eba2a785e12f1cef8b3
+It has _veriied source code_, so you can read/write using EtherScan by using Read Contract/Write Contract functionalities.
+
+Other instance of the same contract is at: 0x69fd745fadf3ef60a91f9b76980f9a5ae9b0e74f
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0x72a097535dbcd8019770c0fe7d3ba1387642fd482dec4f6b86f3be2173a90d83
+Owner: 0xe4aaa0fc768fbbafaa15f3cf16530b1d082a95b0
+
+
+* Tradeable Contract
+Obs: In general the Tradeable Contracts (representing the Tradeable Wallets) are created dinamically, by the use of this application.
+Then, it does not need to be deployed a priori on test net.
+One example of a contract dinamically created on Rinkby was: 0xE4aaA0FC768FbBaFAa15f3cf16530b1D082a95b0.
+However, it was necessary to deploy it on localhost in order to make the unit tests
+
+
+-----------------
+
+Also deployed these contracts:
+These were created only to be used on illustration of the use of a lib
+
+* SafeMath: 0x25213e8abe3405f42d5876bbb29ef95df107c09e
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0xc40ff03e7a4c1875ade3169d7fe761c54a389d985daf7975ece47cd9a65bbe6e
+Used only to illustrate the use of a lib
+
+* LibraryDemo: 0x22438bfcd21c5c76356d56fc2f3a4b827431a611
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0x73b25b0f2a406030aba6551329a3caf6958308abf38878b6257504119d054362
