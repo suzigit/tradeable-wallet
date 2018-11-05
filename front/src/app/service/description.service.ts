@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import * as ipfsAPI from 'ipfs-api';
 
 
-import * as constants from './../../../constants.json';
+import * as Constants from './../../../Constants.json';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/do';
@@ -20,7 +20,7 @@ export class DescriptionService {
   ipfs: any;
 
   constructor(private http: HttpClient) { 
-        this.serverUrl =  (<any>constants).ServerUrl;
+        this.serverUrl =  (<any>Constants).ServerUrl;
         
         // connect to ipfs daemon API server
         //TODO: extract these ctes 

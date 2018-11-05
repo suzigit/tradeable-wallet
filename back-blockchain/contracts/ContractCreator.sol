@@ -31,6 +31,11 @@ contract ContractCreator {
   address public feeContract;
 
   /**
+   * @dev Stores the minimum number of blocks to wait in case of danger of front running
+   */
+  uint8 public numberOfBlocksToPreventFrontRunning;
+
+  /**
    * @dev Event to inform the creation of a new Tradeable  Wallet   
    */ 
  	event NewTradeableWallet(address addr);
@@ -51,13 +56,15 @@ contract ContractCreator {
 		_; 
 	}
 
+
   /**
    * @dev Create a new contract. 
    * The owner is going to be msg.sender.   
    */
-	constructor (uint8 numberOfBlocksToPreventFrontRunningReceived, address feeAddress) public {
+	constructor (uint8 newNumberOfBlocksToPreventFrontRunning, uint8 denominatorFee, address feeAddress) public {
 		owner = msg.sender;
-    feeContract = new FeeContract(owner,numberOfBlocksToPreventFrontRunningReceived, feeAddress);
+    numberOfBlocksToPreventFrontRunning = newNumberOfBlocksToPreventFrontRunning;
+    feeContract = new FeeContract(owner, denominatorFee, feeAddress);
 	}
 
   /**
@@ -88,6 +95,14 @@ contract ContractCreator {
 		stopped = b;
 	} 	
 
+	function setNumberOfBlocksToPreventFrontRunning (uint8 n) public onlyOwner {
+		numberOfBlocksToPreventFrontRunning = n;
+	} 	
+
+	function getNumberOfBlocksToPreventFrontRunning () public view returns (uint8) {
+		return numberOfBlocksToPreventFrontRunning;
+	} 	
+
   /**
    * @dev Returns the number of Tradeable Contract created. 
    * @return contractCount the number of Tradeable Contract created.
@@ -115,5 +130,6 @@ contract ContractCreator {
 	function getOwner() public view returns (address) {
 		return owner;
 	}
+
 
 }

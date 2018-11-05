@@ -9,7 +9,9 @@ declare let window: any;
 const Web3 = require('web3');
 var Accounts = require('web3-eth-accounts');
 
-import * as constants from './../../../constants.json';
+import * as Constants from './../../../Constants.json';
+import * as ContractCreatorAddress from './../../../ContractCreatorAddress.json';
+
 import * as contractCreatortMetadata from  './../../../ContractCreator.json';
 import * as interfaceTradeableContractMetadata from './../../../ITradeableContract.json';
 
@@ -50,7 +52,7 @@ export class BlockchainService {
     createInitialObjects() {
 
         this.contractCreator = new Contract();
-        this.contractCreator.address =  (<any>constants).ContractCreatorAddr;
+        this.contractCreator.address =  (<any>ContractCreatorAddress).ContractCreatorAddress;
         this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;
         this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
         

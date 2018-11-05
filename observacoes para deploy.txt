@@ -1,0 +1,2 @@
+Typescript está referenciando .json gerado pela compilação do solidity, na pasta original
+Durante migração do 2_deploy_contracts.js, um arquivo chamado ContractCreator.json é gerado dentro do front contendo o endereço do contrato.

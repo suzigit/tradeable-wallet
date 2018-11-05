@@ -24,7 +24,7 @@ interface ITradeableContract {
   /**
    * @dev Event to inform a new transfer of ETH from/to this contract. 
    */ 
-	event TransferETHEvent(address owner, uint256 value, bool indexed isWithdraw);
+	event TransferETHEvent(address owner, uint256 value, bool indexed isWithdraw, bytes hexData);
 
   /**
    * @dev Event to inform that one contract became available to sell. 
@@ -155,6 +155,23 @@ interface ITradeableContract {
    * @param valueInWei Value of tokens to be transfered.
    */
 	function makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei) external;
+
+  /**
+   * @dev Transfer Ether from this contract to an external account.
+   * It works as a relayer, receiving hexData
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   * It does not return any value, throwing an exception in case of failure.
+   *
+   * It should emit an event representing the transfer. 
+   * It should only be called by the owner.
+   * 
+   * @param to address to be transfered.
+   * @param valueInWei Value of ether to be transfered.
+   * @param hexData is the SHA3 of the function+ (if any) params to be called. 
+   *        It can accept any number of bytes, as they are relayed to the next call.  
+   */
+	function makeUntrustedEtherTransferToOutsideContractFunction(address to, uint256 valueInWei, bytes hexData) external;
 
   /**
    * @dev Return the ether balance of this contract. 

@@ -236,7 +236,7 @@ contract TradeableContract is ITradeableContract {
 		
 		require (address(this).balance >= valueInWei);
 
-		emit TransferETHEvent(owner, valueInWei, true);
+		emit TransferETHEvent(owner, valueInWei, true, "");
 
 		//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
 		owner.transfer(valueInWei);
@@ -288,32 +288,36 @@ contract TradeableContract is ITradeableContract {
     require(to != address(this));
     require (address(this).balance >= valueInWei);
 
-		emit TransferETHEvent(to, valueInWei, false);
+		emit TransferETHEvent(to, valueInWei, false, "");
 
 		//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
 		to.transfer(valueInWei);
 
 	}
 
-/*
-Premisses:
 
-I do not know what is the name of B's function to be called
-B's function is payable and do not accept any arguments
-hexData is the SHA3 of the name of the B's function
-I do not want to delegate A's storage
-I want to fail if B's function caused an EVM exception
-
-*/
-	function makeUntrustedEtherTransferToOutsideToContractFunction(address to, uint256 valueInWei, bytes4 hexData) external onlyOwner isFrontRunningSafe {
+  /**
+   * @dev Transfer Ether from this contract to an external account.
+   * It works as a relayer, receiving hexData
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   * It does not return any value, throwing an exception in case of failure.
+   *
+   * It should emit an event representing the transfer. 
+   * It should only be called by the owner.
+   * 
+   * @param to address to be transfered.
+   * @param valueInWei Value of ether to be transfered.
+   * @param hexData is the SHA3 of the function+ (if any) params to be called. 
+   *        It can accept any number of bytes, as they are relayed to the next call.  
+   */
+	function makeUntrustedEtherTransferToOutsideContractFunction(address to, uint256 valueInWei, bytes hexData) external onlyOwner isFrontRunningSafe {
 
 		require(to != address(0x0));
     require(to != address(this));
     require (address(this).balance >= valueInWei);
-//?? falta colocar na interface e definir evento
-//		emit TransferETHEvent(to, valueInWei, false);
-    if(!to.call.value(valueInWei)(hexData)) revert(); 
-
+		emit TransferETHEvent(to, valueInWei, false, hexData);
+    require( to.call.value(valueInWei)(hexData), "Transfer failed" );  
 	}
 
   /**
