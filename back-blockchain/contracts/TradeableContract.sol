@@ -113,6 +113,9 @@ contract TradeableContract is ITradeableContract {
 		return -1;
 	}
 
+  function getFeeContractAddress() external view returns (address) {
+    return feeContract;
+  }
 
    /**
 	* @dev Indicate that this contract is available to sell.

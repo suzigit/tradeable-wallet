@@ -191,6 +191,8 @@ interface ITradeableContract {
 
   function getTotalBlocksToFinishFrontRunningRiskExternal () view external returns (uint256);
 
+  function getFeeContractAddress() view external returns (address);
+
 
 
 }

@@ -13,8 +13,14 @@ contract FeeContract {
    */	
   uint8 public denominatorFee;
 
+  /**
+   * @dev The address of who is going to receive the fee
+   */	
   address feeDestinationAddress;
 
+  /**
+   * @dev The set of ambassors. They do not pay fees
+   */	
   address[] ambassadorAddress;
 
   
@@ -34,10 +40,11 @@ contract FeeContract {
 	
   /**
    * @dev Create a new contract. 
-   * The owner is going to be msg.sender.   
+   * The owner is going to be msg.sender. 
+   *   
    */
 	constructor (address newOwner, uint8 newDenominatorFee, address newDestinationAddr) public {
-		require (newDenominatorFee >= 34);
+		require (newDenominatorFee >= 34); //The fee must be at most 3%
 
 		owner = newOwner;
         denominatorFee = newDenominatorFee;
@@ -53,8 +60,11 @@ contract FeeContract {
         feeDestinationAddress = newAddr;
 	}
 
-
     function addAmbassadorAddressAddress(address newAddress) onlyOwner external {
+        int8 index = searchAmbassadorAddress(newAddress); 
+        
+        require(index==-1);//not find the element
+
         ambassadorAddress.push(newAddress);
     }
 
@@ -89,6 +99,9 @@ contract FeeContract {
         return ambassadorAddress[index];
     }
 
+    function getAmbassadorAddressLenght() view external returns (uint) {
+        return ambassadorAddress.length;
+    }
 
   /**
    * @dev Returns denominator to be used in the calculation of fee value

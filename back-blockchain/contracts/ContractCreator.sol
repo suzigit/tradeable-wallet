@@ -131,5 +131,8 @@ contract ContractCreator {
 		return owner;
 	}
 
+  function getFeeContractAddress() public view returns (address) {
+    return feeContract;
+  }
 
 }
