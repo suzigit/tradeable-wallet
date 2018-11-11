@@ -239,7 +239,7 @@ contract TradeableContract is ITradeableContract {
 		
 		require (address(this).balance >= valueInWei);
 
-		emit TransferETHEvent(owner, valueInWei, true, "");
+		emit TransferETHEvent(owner, valueInWei, true, "0x0");
 
 		//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
 		owner.transfer(valueInWei);
@@ -273,35 +273,10 @@ contract TradeableContract is ITradeableContract {
 	}
 
 
-  /**
-   * @dev Transfer Ether from this contract to an external account. 
-   *
-   * This function is marked as untrusted since this smart contract cannot trust external calls.
-   * It does not return any value, throwing an exception in case of failure.
-   *
-   * It should emit an event representing the transfer. 
-   * It should only be called by the owner.
-   * 
-   * @param to address to be transfered.
-   * @param valueInWei Value of ether to be transfered.
-   */
-	function makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei) external onlyOwner isFrontRunningSafe {
-
-		require(to != address(0x0));
-    require(to != address(this));
-    require (address(this).balance >= valueInWei);
-
-		emit TransferETHEvent(to, valueInWei, false, "");
-
-		//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
-		to.transfer(valueInWei);
-
-	}
-
 
   /**
    * @dev Transfer Ether from this contract to an external account.
-   * It works as a relayer, receiving hexData
+   * If there is hexData, it works as a relayer fowarding the data
    *
    * This function is marked as untrusted since this smart contract cannot trust external calls.
    * It does not return any value, throwing an exception in case of failure.
@@ -312,15 +287,24 @@ contract TradeableContract is ITradeableContract {
    * @param to address to be transfered.
    * @param valueInWei Value of ether to be transfered.
    * @param hexData is the SHA3 of the function+ (if any) params to be called. 
-   *        It can accept any number of bytes, as they are relayed to the next call.  
+   *        It can accept any number of bytes, as they are relayed to the next call. 
+   *        If hexData is "0x0", no data will be send 
    */
-	function makeUntrustedEtherTransferToOutsideContractFunction(address to, uint256 valueInWei, bytes hexData) external onlyOwner isFrontRunningSafe {
+	function makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei, bytes hexData) external onlyOwner isFrontRunningSafe {
 
 		require(to != address(0x0));
     require(to != address(this));
     require (address(this).balance >= valueInWei);
 		emit TransferETHEvent(to, valueInWei, false, hexData);
-    require( to.call.value(valueInWei)(hexData), "Transfer failed" );  
+
+    bytes memory bytesNull = "0x0";
+    if (keccak256(hexData)!=keccak256(bytesNull)) { //compare by hashs
+        require( to.call.value(valueInWei)(hexData), "Transfer failed" );  
+    }
+    else {
+    		to.transfer(valueInWei);
+    }
+
 	}
 
   /**

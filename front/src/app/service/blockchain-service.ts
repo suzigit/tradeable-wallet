@@ -129,9 +129,11 @@ export class BlockchainService {
         }); 
     }
 
-   sendEth(tradeableContractAddr: string, toAddress:string, valueToWithdrawInGWei: number, fSucess: any, fError: any) {
+   sendEth(tradeableContractAddr: string, toAddress:string, valueToWithdrawInGWei: number, 
+        hexData: string, fSucess: any, fError: any) {
 
        console.log("withdrawEth do " + tradeableContractAddr); 
+       console.log("hexData " + hexData); 
 
         this.getAccounts().then(accounts => {
             let selectedAccount = accounts[0];

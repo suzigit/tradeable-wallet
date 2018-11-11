@@ -63,14 +63,14 @@
     "absolutePath": "/C/workspace/tradeable-wallet/back-blockchain/contracts/IFeeContractToTradeableContract.sol",
     "exportedSymbols": {
       "IFeeContractToTradeableContract": [
-        500
+        513
       ]
     },
-    "id": 501,
+    "id": 514,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 480,
+        "id": 493,
         "literals": [
           "solidity",
           "^",
@@ -86,9 +86,9 @@
         "contractKind": "interface",
         "documentation": "@title Fee.\r",
         "fullyImplemented": false,
-        "id": 500,
+        "id": 513,
         "linearizedBaseContracts": [
-          500
+          513
         ],
         "name": "IFeeContractToTradeableContract",
         "nodeType": "ContractDefinition",
@@ -96,7 +96,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 489,
+            "id": 502,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -104,15 +104,15 @@
             "name": "getFeeValueInWei",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 485,
+              "id": 498,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 482,
+                  "id": 495,
                   "name": "valueInWei",
                   "nodeType": "VariableDeclaration",
-                  "scope": 489,
+                  "scope": 502,
                   "src": "130:18:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -121,7 +121,7 @@
                     "typeString": "uint128"
                   },
                   "typeName": {
-                    "id": 481,
+                    "id": 494,
                     "name": "uint128",
                     "nodeType": "ElementaryTypeName",
                     "src": "130:7:3",
@@ -135,10 +135,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 484,
+                  "id": 497,
                   "name": "addrSelller",
                   "nodeType": "VariableDeclaration",
-                  "scope": 489,
+                  "scope": 502,
                   "src": "150:19:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -147,7 +147,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 483,
+                    "id": 496,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "150:7:3",
@@ -164,15 +164,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 488,
+              "id": 501,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 487,
+                  "id": 500,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 489,
+                  "scope": 502,
                   "src": "194:7:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -181,7 +181,7 @@
                     "typeString": "uint128"
                   },
                   "typeName": {
-                    "id": 486,
+                    "id": 499,
                     "name": "uint128",
                     "nodeType": "ElementaryTypeName",
                     "src": "194:7:3",
@@ -196,7 +196,7 @@
               ],
               "src": "193:9:3"
             },
-            "scope": 500,
+            "scope": 513,
             "src": "104:99:3",
             "stateMutability": "view",
             "superFunction": null,
@@ -205,7 +205,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 494,
+            "id": 507,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -213,22 +213,22 @@
             "name": "getDenominatorFee",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 490,
+              "id": 503,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "234:2:3"
             },
             "payable": false,
             "returnParameters": {
-              "id": 493,
+              "id": 506,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 492,
+                  "id": 505,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 494,
+                  "scope": 507,
                   "src": "260:5:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -237,7 +237,7 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 491,
+                    "id": 504,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
                     "src": "260:5:3",
@@ -252,7 +252,7 @@
               ],
               "src": "259:7:3"
             },
-            "scope": 500,
+            "scope": 513,
             "src": "208:59:3",
             "stateMutability": "view",
             "superFunction": null,
@@ -261,7 +261,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 499,
+            "id": 512,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -269,22 +269,22 @@
             "name": "getFeeDestinationAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 495,
+              "id": 508,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "305:2:3"
             },
             "payable": false,
             "returnParameters": {
-              "id": 498,
+              "id": 511,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 497,
+                  "id": 510,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 499,
+                  "scope": 512,
                   "src": "331:7:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -293,7 +293,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 496,
+                    "id": 509,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "331:7:3",
@@ -308,14 +308,14 @@
               ],
               "src": "330:9:3"
             },
-            "scope": 500,
+            "scope": 513,
             "src": "272:68:3",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 501,
+        "scope": 514,
         "src": "54:291:3"
       }
     ],
@@ -325,14 +325,14 @@
     "absolutePath": "/C/workspace/tradeable-wallet/back-blockchain/contracts/IFeeContractToTradeableContract.sol",
     "exportedSymbols": {
       "IFeeContractToTradeableContract": [
-        500
+        513
       ]
     },
-    "id": 501,
+    "id": 514,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 480,
+        "id": 493,
         "literals": [
           "solidity",
           "^",
@@ -348,9 +348,9 @@
         "contractKind": "interface",
         "documentation": "@title Fee.\r",
         "fullyImplemented": false,
-        "id": 500,
+        "id": 513,
         "linearizedBaseContracts": [
-          500
+          513
         ],
         "name": "IFeeContractToTradeableContract",
         "nodeType": "ContractDefinition",
@@ -358,7 +358,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 489,
+            "id": 502,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -366,15 +366,15 @@
             "name": "getFeeValueInWei",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 485,
+              "id": 498,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 482,
+                  "id": 495,
                   "name": "valueInWei",
                   "nodeType": "VariableDeclaration",
-                  "scope": 489,
+                  "scope": 502,
                   "src": "130:18:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -383,7 +383,7 @@
                     "typeString": "uint128"
                   },
                   "typeName": {
-                    "id": 481,
+                    "id": 494,
                     "name": "uint128",
                     "nodeType": "ElementaryTypeName",
                     "src": "130:7:3",
@@ -397,10 +397,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 484,
+                  "id": 497,
                   "name": "addrSelller",
                   "nodeType": "VariableDeclaration",
-                  "scope": 489,
+                  "scope": 502,
                   "src": "150:19:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -409,7 +409,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 483,
+                    "id": 496,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "150:7:3",
@@ -426,15 +426,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 488,
+              "id": 501,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 487,
+                  "id": 500,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 489,
+                  "scope": 502,
                   "src": "194:7:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -443,7 +443,7 @@
                     "typeString": "uint128"
                   },
                   "typeName": {
-                    "id": 486,
+                    "id": 499,
                     "name": "uint128",
                     "nodeType": "ElementaryTypeName",
                     "src": "194:7:3",
@@ -458,7 +458,7 @@
               ],
               "src": "193:9:3"
             },
-            "scope": 500,
+            "scope": 513,
             "src": "104:99:3",
             "stateMutability": "view",
             "superFunction": null,
@@ -467,7 +467,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 494,
+            "id": 507,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -475,22 +475,22 @@
             "name": "getDenominatorFee",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 490,
+              "id": 503,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "234:2:3"
             },
             "payable": false,
             "returnParameters": {
-              "id": 493,
+              "id": 506,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 492,
+                  "id": 505,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 494,
+                  "scope": 507,
                   "src": "260:5:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -499,7 +499,7 @@
                     "typeString": "uint8"
                   },
                   "typeName": {
-                    "id": 491,
+                    "id": 504,
                     "name": "uint8",
                     "nodeType": "ElementaryTypeName",
                     "src": "260:5:3",
@@ -514,7 +514,7 @@
               ],
               "src": "259:7:3"
             },
-            "scope": 500,
+            "scope": 513,
             "src": "208:59:3",
             "stateMutability": "view",
             "superFunction": null,
@@ -523,7 +523,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 499,
+            "id": 512,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -531,22 +531,22 @@
             "name": "getFeeDestinationAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 495,
+              "id": 508,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "305:2:3"
             },
             "payable": false,
             "returnParameters": {
-              "id": 498,
+              "id": 511,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 497,
+                  "id": 510,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 499,
+                  "scope": 512,
                   "src": "331:7:3",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -555,7 +555,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 496,
+                    "id": 509,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "331:7:3",
@@ -570,14 +570,14 @@
               ],
               "src": "330:9:3"
             },
-            "scope": 500,
+            "scope": 513,
             "src": "272:68:3",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 501,
+        "scope": 514,
         "src": "54:291:3"
       }
     ],
@@ -589,5 +589,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-11-06T01:54:36.057Z"
+  "updatedAt": "2018-11-07T02:16:54.784Z"
 }

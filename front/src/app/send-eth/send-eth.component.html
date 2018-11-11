@@ -36,6 +36,12 @@
       <input type="number" [ngModel]="convertToETH()" maxlength="20" size="10" readonly disabled>
     </label>
   </div>
+
+   <div class="row">
+    <label>Enter additional hex data (if any):
+      <input type="string" [(ngModel)]="hexData" maxlength="100" size="20">
+    </label>
+  </div>
   
   <div class="row" style="display:flex; align-items: center;" >
     <input type="checkbox"  id="termsOfService" [(ngModel)]="isTermsOfServiceChecked">
@@ -43,7 +49,7 @@
   </div>
 
     <div class="row">
-    <label>Transfer from your tradeable wallet to the destination address by clicking here <a href="javascript:void(0)" (click)="withdrawEth()">
+    <label>Transfer from your tradeable wallet to the destination address by clicking here <a href="javascript:void(0)" (click)="sendEth()">
       <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
   </div>
 

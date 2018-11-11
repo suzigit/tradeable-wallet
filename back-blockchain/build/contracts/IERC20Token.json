@@ -54,14 +54,14 @@
     "absolutePath": "/C/workspace/tradeable-wallet/back-blockchain/contracts/IERC20Token.sol",
     "exportedSymbols": {
       "IERC20Token": [
-        478
+        491
       ]
     },
-    "id": 479,
+    "id": 492,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 461,
+        "id": 474,
         "literals": [
           "solidity",
           "^",
@@ -77,9 +77,9 @@
         "contractKind": "interface",
         "documentation": "@title IERC20Token\r\n@dev IERC20 parcial interface, to be used to invoke transfer function.\r",
         "fullyImplemented": false,
-        "id": 478,
+        "id": 491,
         "linearizedBaseContracts": [
-          478
+          491
         ],
         "name": "IERC20Token",
         "nodeType": "ContractDefinition",
@@ -87,7 +87,7 @@
           {
             "body": null,
             "documentation": "@dev Reproduces the signature of a transfer function from a ERC-20 token.\r\nThe token is transfer from the msg.sender.\r\n\r\n@param to The address of the recipient\r\n@param amount the amount to send\r",
-            "id": 470,
+            "id": 483,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -95,15 +95,15 @@
             "name": "transfer",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 466,
+              "id": 479,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 463,
+                  "id": 476,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 470,
+                  "scope": 483,
                   "src": "421:10:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -112,7 +112,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 462,
+                    "id": 475,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "421:7:2",
@@ -126,10 +126,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 465,
+                  "id": 478,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 470,
+                  "scope": 483,
                   "src": "433:14:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -138,7 +138,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 464,
+                    "id": 477,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "433:7:2",
@@ -155,15 +155,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 469,
+              "id": 482,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 468,
+                  "id": 481,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 470,
+                  "scope": 483,
                   "src": "467:4:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -172,7 +172,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 467,
+                    "id": 480,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "467:4:2",
@@ -187,7 +187,7 @@
               ],
               "src": "466:6:2"
             },
-            "scope": 478,
+            "scope": 491,
             "src": "403:70:2",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -196,7 +196,7 @@
           {
             "body": null,
             "documentation": "@dev Return the token balance of a given address\r\n@param addr address to get the balance\r\n@return token balance of the address\r",
-            "id": 477,
+            "id": 490,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -204,15 +204,15 @@
             "name": "balanceOf",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 473,
+              "id": 486,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 472,
+                  "id": 485,
                   "name": "addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 477,
+                  "scope": 490,
                   "src": "667:12:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -221,7 +221,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 471,
+                    "id": 484,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "667:7:2",
@@ -238,15 +238,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 476,
+              "id": 489,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 475,
+                  "id": 488,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 477,
+                  "scope": 490,
                   "src": "703:7:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -255,7 +255,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 474,
+                    "id": 487,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "703:7:2",
@@ -270,14 +270,14 @@
               ],
               "src": "702:9:2"
             },
-            "scope": 478,
+            "scope": 491,
             "src": "648:64:2",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 479,
+        "scope": 492,
         "src": "138:579:2"
       }
     ],
@@ -287,14 +287,14 @@
     "absolutePath": "/C/workspace/tradeable-wallet/back-blockchain/contracts/IERC20Token.sol",
     "exportedSymbols": {
       "IERC20Token": [
-        478
+        491
       ]
     },
-    "id": 479,
+    "id": 492,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 461,
+        "id": 474,
         "literals": [
           "solidity",
           "^",
@@ -310,9 +310,9 @@
         "contractKind": "interface",
         "documentation": "@title IERC20Token\r\n@dev IERC20 parcial interface, to be used to invoke transfer function.\r",
         "fullyImplemented": false,
-        "id": 478,
+        "id": 491,
         "linearizedBaseContracts": [
-          478
+          491
         ],
         "name": "IERC20Token",
         "nodeType": "ContractDefinition",
@@ -320,7 +320,7 @@
           {
             "body": null,
             "documentation": "@dev Reproduces the signature of a transfer function from a ERC-20 token.\r\nThe token is transfer from the msg.sender.\r\n\r\n@param to The address of the recipient\r\n@param amount the amount to send\r",
-            "id": 470,
+            "id": 483,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -328,15 +328,15 @@
             "name": "transfer",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 466,
+              "id": 479,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 463,
+                  "id": 476,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 470,
+                  "scope": 483,
                   "src": "421:10:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -345,7 +345,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 462,
+                    "id": 475,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "421:7:2",
@@ -359,10 +359,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 465,
+                  "id": 478,
                   "name": "amount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 470,
+                  "scope": 483,
                   "src": "433:14:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -371,7 +371,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 464,
+                    "id": 477,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "433:7:2",
@@ -388,15 +388,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 469,
+              "id": 482,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 468,
+                  "id": 481,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 470,
+                  "scope": 483,
                   "src": "467:4:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -405,7 +405,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 467,
+                    "id": 480,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "467:4:2",
@@ -420,7 +420,7 @@
               ],
               "src": "466:6:2"
             },
-            "scope": 478,
+            "scope": 491,
             "src": "403:70:2",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -429,7 +429,7 @@
           {
             "body": null,
             "documentation": "@dev Return the token balance of a given address\r\n@param addr address to get the balance\r\n@return token balance of the address\r",
-            "id": 477,
+            "id": 490,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -437,15 +437,15 @@
             "name": "balanceOf",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 473,
+              "id": 486,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 472,
+                  "id": 485,
                   "name": "addr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 477,
+                  "scope": 490,
                   "src": "667:12:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -454,7 +454,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 471,
+                    "id": 484,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "667:7:2",
@@ -471,15 +471,15 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 476,
+              "id": 489,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 475,
+                  "id": 488,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 477,
+                  "scope": 490,
                   "src": "703:7:2",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -488,7 +488,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 474,
+                    "id": 487,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "703:7:2",
@@ -503,14 +503,14 @@
               ],
               "src": "702:9:2"
             },
-            "scope": 478,
+            "scope": 491,
             "src": "648:64:2",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 479,
+        "scope": 492,
         "src": "138:579:2"
       }
     ],
@@ -522,5 +522,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-11-06T01:54:36.049Z"
+  "updatedAt": "2018-11-07T02:16:54.785Z"
 }

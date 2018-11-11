@@ -20,7 +20,7 @@ export class SendEthComponent implements OnInit {
   valueInGWei: number; 
   destinationAddress: string;
   sBalance: string;
-  
+  hexData: string;
 
 
   constructor(private blockchainService: BlockchainService) { 
@@ -59,7 +59,7 @@ export class SendEthComponent implements OnInit {
         });   
  }
 
-  withdrawEth(){
+  sendEth(){
 
         let self = this;
         self.errorFront = undefined;
@@ -86,8 +86,9 @@ export class SendEthComponent implements OnInit {
         }  
 
         console.log("All conditions ok - sendEth!");            
-            
-        this.blockchainService.sendEth(self.tradeableWalletAddress, self.destinationAddress, self.valueInGWei,
+        if (!self.hexData) self.hexData = "0x0";
+
+        this.blockchainService.sendEth(self.tradeableWalletAddress, self.destinationAddress, self.valueInGWei, self.hexData,
             function(result) {
                 console.log("send sucess!");
                 console.log(result);
@@ -98,6 +99,7 @@ export class SendEthComponent implements OnInit {
                 self.errorBack = e;
                 self.sBalance = "";
             });
+
         
 
   }
