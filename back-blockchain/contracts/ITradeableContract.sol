@@ -156,7 +156,8 @@ interface ITradeableContract {
    * @param to address to be transfered.
    * @param valueInWei Value of ether to be transfered.
    * @param hexData is the SHA3 of the function+ (if any) params to be called. 
-   *        It can accept any number of bytes, as they are relayed to the next call.  
+   *        It can accept any number of bytes, as they are relayed to the next call. 
+   *        If hexData has length 0, no data will be send 
    */
 	function makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei, bytes hexData) external;
 

@@ -288,7 +288,7 @@ contract TradeableContract is ITradeableContract {
    * @param valueInWei Value of ether to be transfered.
    * @param hexData is the SHA3 of the function+ (if any) params to be called. 
    *        It can accept any number of bytes, as they are relayed to the next call. 
-   *        If hexData is "0x0", no data will be send 
+   *        If hexData has length 0, no data will be send 
    */
 	function makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei, bytes hexData) external onlyOwner isFrontRunningSafe {
 
@@ -297,8 +297,7 @@ contract TradeableContract is ITradeableContract {
     require (address(this).balance >= valueInWei);
 		emit TransferETHEvent(to, valueInWei, false, hexData);
 
-    bytes memory bytesNull = "0x0";
-    if (keccak256(hexData)!=keccak256(bytesNull)) { //compare by hashs
+    if (hexData.length != 0) { 
         require( to.call.value(valueInWei)(hexData), "Transfer failed" );  
     }
     else {

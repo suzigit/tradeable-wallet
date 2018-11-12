@@ -86,7 +86,6 @@ export class SendEthComponent implements OnInit {
         }  
 
         console.log("All conditions ok - sendEth!");            
-        if (!self.hexData) self.hexData = "0x0";
 
         this.blockchainService.sendEth(self.tradeableWalletAddress, self.destinationAddress, self.valueInGWei, self.hexData,
             function(result) {
