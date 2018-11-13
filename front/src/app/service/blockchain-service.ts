@@ -135,26 +135,44 @@ export class BlockchainService {
 
        console.log("withdrawEth do " + tradeableContractAddr); 
        console.log("hexData " + hexData); 
-       let hexDataInBytes = [];
        if (hexData) {
-            hexDataInBytes = Web3Utils.hexToBytes(hexData);
-       }    
-       console.log("hexDataInBytes "); 
-       console.log(hexDataInBytes); 
 
+            let hexDataInBytes = Web3Utils.hexToBytes(hexData);
+            console.log("hexDataInBytes "); 
+            console.log(hexDataInBytes); 
 
-       this.getAccounts().then(accounts => {
-            let selectedAccount = accounts[0];
-            let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
+            this.getAccounts().then(accounts => {
+                    let selectedAccount = accounts[0];
+                    let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
+                    
+                    let sPriceInGWei = String(valueToWithdrawInGWei);
+                    let valueToWithdrawInWei = this.web3.utils.toWei(sPriceInGWei, 'GWei');
+
+                    tradeableContract.instance.methods.makeUntrustedEtherTransferToOutside(toAddress, valueToWithdrawInWei, hexDataInBytes)
+                    .send ({ from:selectedAccount, gas:500000 })
+                    .then (result => fSucess(result))
+                    .catch (error => fError(error));
+                }); 
             
-            let sPriceInGWei = String(valueToWithdrawInGWei);
-            let valueToWithdrawInWei = this.web3.utils.toWei(sPriceInGWei, 'GWei');
+       } 
+       else {
 
-            tradeableContract.instance.methods.makeUntrustedEtherTransferToOutside(toAddress, valueToWithdrawInWei, hexDataInBytes)
-            .send ({ from:selectedAccount, gas:500000 })
-            .then (result => fSucess(result))
-            .catch (error => fError(error));
-        }); 
+            this.getAccounts().then(accounts => {
+                    let selectedAccount = accounts[0];
+                    let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
+                    
+                    let sPriceInGWei = String(valueToWithdrawInGWei);
+                    let valueToWithdrawInWei = this.web3.utils.toWei(sPriceInGWei, 'GWei');
+
+                    tradeableContract.instance.methods.makeUntrustedEtherTransferToOutside(toAddress, valueToWithdrawInWei)
+                    .send ({ from:selectedAccount, gas:500000 })
+                    .then (result => fSucess(result))
+                    .catch (error => fError(error));
+                }); 
+            
+       }   
+
+
     }
 
 

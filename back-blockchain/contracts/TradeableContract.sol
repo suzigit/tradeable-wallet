@@ -276,7 +276,7 @@ contract TradeableContract is ITradeableContract {
 
   /**
    * @dev Transfer Ether from this contract to an external account.
-   * If there is hexData, it works as a relayer fowarding the data
+   * it works as a relayer fowarding the hexData
    *
    * This function is marked as untrusted since this smart contract cannot trust external calls.
    * It does not return any value, throwing an exception in case of failure.
@@ -297,12 +297,30 @@ contract TradeableContract is ITradeableContract {
     require (address(this).balance >= valueInWei);
 		emit TransferETHEvent(to, valueInWei, false, hexData);
 
-    if (hexData.length != 0) { 
-        require( to.call.value(valueInWei)(hexData), "Transfer failed" );  
-    }
-    else {
-    		to.transfer(valueInWei);
-    }
+    require( to.call.value(valueInWei)(hexData), "Transfer failed" );  
+
+	}
+
+  /**
+   * @dev Transfer Ether from this contract to an external account.
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   * It does not return any value, throwing an exception in case of failure.
+   *
+   * It should emit an event representing the transfer. 
+   * It should only be called by the owner.
+   * 
+   * @param to address to be transfered.
+   * @param valueInWei Value of ether to be transfered.
+   */
+	function makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei) external onlyOwner isFrontRunningSafe {
+
+		require(to != address(0x0));
+    require(to != address(this));
+    require (address(this).balance >= valueInWei);
+		emit TransferETHEvent(to, valueInWei, false, "");
+
+ 		to.transfer(valueInWei);
 
 	}
 

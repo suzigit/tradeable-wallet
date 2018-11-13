@@ -296,6 +296,24 @@
         {
           "name": "valueInWei",
           "type": "uint256"
+        }
+      ],
+      "name": "makeUntrustedEtherTransferToOutside",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "name": "valueInWei",
+          "type": "uint256"
         },
         {
           "name": "hexData",
@@ -396,16 +414,16 @@
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.23;\r\n\r\n/**\r\n * @title ITradeableContract\r\n * @dev Contract that represent a Wallet, whose ownership can be traded (sell/buy).\r\n * This contract can be used to receive tokens, and has a specific function to withdraw these tokens. \r\n */\r\ninterface ITradeableContract {\r\n\r\n  /**\r\n   * @dev Event to inform a new owner of this Contract. \r\n   * Do not index the owner (old nor current) since it can assume too many values.   \r\n   * When the contract is created, it is fired with the old owner 0x0.    \r\n   */ \r\n\tevent NewOwnerEvent(address old, address current);\r\n\t\r\n\r\n  /**\r\n   * @dev Event to inform a new transfer of tokens from/to this contract. \r\n   */ \r\n\tevent TransferTokensEvent(address tokenAddr, address owner, uint256 value, bool indexed isWithdraw, bool sucess);\r\n\t\r\n\r\n  /**\r\n   * @dev Event to inform a new transfer of ETH from/to this contract. \r\n   */ \r\n\tevent TransferETHEvent(address owner, uint256 value, bool indexed isWithdraw, bytes hexData);\r\n\r\n  /**\r\n   * @dev Event to inform that one contract became available to sell. \r\n   * Do not index the owner nor contractAdd since they can assume too many values.   \r\n   */ \r\n\tevent AvaliableToSellEvent(address owner, address contractAddr, bool indexed isActionOfSelling);\r\n\r\n  /**\r\n   * @dev Event to inform that a deposit of Ether was made in this contract. \r\n   */ \r\n  event\tDepositReceivedEvent(address sender); \r\n\r\n\r\n  /**\r\n   * @dev Return the current owner of this contract.\r\n   * @return the owner of this contract.\r\n   */\t\r\n\tfunction getOwner() view external returns (address);\r\n\r\n  /**\r\n   * @dev Return the hash description of this contract.\r\n   * @return the hash to the description of this contract.\r\n   */\t\r\n\tfunction getHashDescription() external view returns (string);\r\n\r\n  /**\r\n   * @dev Change the hash to the description to this wallet.\r\n   * @param hDescription new hash description to this wallet.\r\n   * It should only be called by the owner.\r\n   */\t\r\n\tfunction changeHashDescription(string hDescription) external;\r\n\r\n  /**\r\n   * @dev Return the price for sell this contract, in Wei. \r\n   * If the current owner does not put it for sale, the returned value is going to be -1.\r\n   * @return price in Wei or -1.\r\n   */\r\n\tfunction getPriceToSellInWei() external view returns (int256);\r\n\r\n  /**\r\n   * @dev Returns denominator to be used in the calculation of fee value\r\n   * The fee value is calculated by price (in Wei)/(denominator fee).\r\n   * @return Denominator to calculate fee value \r\n   */\r\n\tfunction getDenominatorFee() external view returns (uint8);\r\n\r\n\r\n   /**\r\n\t* @dev Indicate that this contract is available to sell.\r\n\t* It should only be called by the owner.\r\n\t* It should emit an event in order to allow anyone to monitor new opportunities to buy.\r\n\t* @param priceInWei Price that the owner wants to sell this contract (in Wei)\r\n\t* @param hDescription Hash to the description of this contract \r\n\t*/\r\n \tfunction setAvailableToSell (uint128 priceInWei, string hDescription) external;\r\n\r\n  function cancelSellingAction() external;\r\n\r\n\r\n   /**\r\n\t* @dev Change the ownership of this contract. It happens when someone buys an available to sell contract.\r\n\t* This functions is payable - It should receive necessary money to cover the contract price.\r\n\t*\r\n    * This function is marked as untrusted since this smart contract cannot trust the code of external calls.\r\n\t*\r\n\t* It should emit an event with the old and new owners.\r\n\t*/\r\n\tfunction untrustedChangeOwnershipWithTrade () payable external;\r\n\r\n   /**\r\n\t* @dev Since this contract represents a wallet it is worth to enable the possibility to receive ether.\r\n\t*/\r\n\tfunction() payable external;\r\n\r\n\r\n  /**\r\n   * @dev Transfer tokens from external contracts to the owner of its contract. \r\n   *\r\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\n   *\r\n   * It should emit an event representing the withdraw. \r\n   * It should only be called by the owner.\r\n   * \r\n   * @param tokenAddr address of tokens to be transfered.\r\n   * @param value Value of tokens to be withdraw.\r\n   * @return bool from the transfer function in tokenAddr.\r\n   */\r\n\tfunction makeUntrustedWithdrawalOfTokens(address tokenAddr, uint256 value) external returns (bool);\r\n\r\n\r\n  /**\r\n   * @dev Transfer ether from external contracts to the owner of its contract. \r\n   *\r\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\n   * It does not return any value, throwing an exception in case of failure.\r\n   *\r\n   * It should emit an event representing the withdraw. \r\n   * It should only be called by the owner.\r\n   * \r\n   * @param valueInWei Value of ether to be withdraw (in Wei).\r\n   */\r\n\tfunction makeUntrustWithdrawOfEther(uint256 valueInWei) external;\r\n\r\n  /**\r\n   * @dev Transfer tokens from this contract to an external account. \r\n   *\r\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\n   *\r\n   * It should emit an event representing the transfer. \r\n   * It should only be called by the owner.\r\n   * \r\n   * @param tokenAddr address of tokens to be transfered.\r\n   * @param to address to be transfered.\r\n   * @param value Value of tokens to be transfered.\r\n   */\r\n\tfunction makeUntrustedTokenTransferToOutside(address tokenAddr, address to, uint256 value) external returns (bool);\r\n\r\n\r\n  /**\r\n   * @dev Transfer Ether from this contract to an external account.\r\n   * If there is hexData, it works as a relayer fowarding the data\r\n   *\r\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\n   * It does not return any value, throwing an exception in case of failure.\r\n   *\r\n   * It should emit an event representing the transfer. \r\n   * It should only be called by the owner.\r\n   * \r\n   * @param to address to be transfered.\r\n   * @param valueInWei Value of ether to be transfered.\r\n   * @param hexData is the SHA3 of the function+ (if any) params to be called. \r\n   *        It can accept any number of bytes, as they are relayed to the next call.  \r\n   */\r\n\tfunction makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei, bytes hexData) external;\r\n\r\n  /**\r\n   * @dev Return the ether balance of this contract. \r\n   * @return ether balance of this contract\r\n   */\r\n\tfunction getEtherBalance () external view returns (uint256);\r\n\r\n  /**\r\n   * @dev Return the token balance of this contract.\r\n   * @param tokenAddr the address of the token which balance will be returned \r\n   * @return token balance of this contract\r\n   */\r\n\tfunction getTokenBalanceOf (address tokenAddr) external view returns (uint256);\r\n\r\n\r\n  function tokenFallback(address _from, uint _value, bytes _data) external;\r\n\r\n  function getTotalBlocksToFinishFrontRunningRiskExternal () view external returns (uint256);\r\n\r\n  function getFeeContractAddress() view external returns (address);\r\n\r\n\r\n\r\n}\r\n\r\n\r\n",
+  "source": "pragma solidity ^0.4.23;\r\n\r\n/**\r\n * @title ITradeableContract\r\n * @dev Contract that represent a Wallet, whose ownership can be traded (sell/buy).\r\n * This contract can be used to receive tokens, and has a specific function to withdraw these tokens. \r\n */\r\ninterface ITradeableContract {\r\n\r\n  /**\r\n   * @dev Event to inform a new owner of this Contract. \r\n   * Do not index the owner (old nor current) since it can assume too many values.   \r\n   * When the contract is created, it is fired with the old owner 0x0.    \r\n   */ \r\n\tevent NewOwnerEvent(address old, address current);\r\n\t\r\n\r\n  /**\r\n   * @dev Event to inform a new transfer of tokens from/to this contract. \r\n   */ \r\n\tevent TransferTokensEvent(address tokenAddr, address owner, uint256 value, bool indexed isWithdraw, bool sucess);\r\n\t\r\n\r\n  /**\r\n   * @dev Event to inform a new transfer of ETH from/to this contract. \r\n   */ \r\n\tevent TransferETHEvent(address owner, uint256 value, bool indexed isWithdraw, bytes hexData);\r\n\r\n  /**\r\n   * @dev Event to inform that one contract became available to sell. \r\n   * Do not index the owner nor contractAdd since they can assume too many values.   \r\n   */ \r\n\tevent AvaliableToSellEvent(address owner, address contractAddr, bool indexed isActionOfSelling);\r\n\r\n  /**\r\n   * @dev Event to inform that a deposit of Ether was made in this contract. \r\n   */ \r\n  event\tDepositReceivedEvent(address sender); \r\n\r\n\r\n  /**\r\n   * @dev Return the current owner of this contract.\r\n   * @return the owner of this contract.\r\n   */\t\r\n\tfunction getOwner() view external returns (address);\r\n\r\n  /**\r\n   * @dev Return the hash description of this contract.\r\n   * @return the hash to the description of this contract.\r\n   */\t\r\n\tfunction getHashDescription() external view returns (string);\r\n\r\n  /**\r\n   * @dev Change the hash to the description to this wallet.\r\n   * @param hDescription new hash description to this wallet.\r\n   * It should only be called by the owner.\r\n   */\t\r\n\tfunction changeHashDescription(string hDescription) external;\r\n\r\n  /**\r\n   * @dev Return the price for sell this contract, in Wei. \r\n   * If the current owner does not put it for sale, the returned value is going to be -1.\r\n   * @return price in Wei or -1.\r\n   */\r\n\tfunction getPriceToSellInWei() external view returns (int256);\r\n\r\n  /**\r\n   * @dev Returns denominator to be used in the calculation of fee value\r\n   * The fee value is calculated by price (in Wei)/(denominator fee).\r\n   * @return Denominator to calculate fee value \r\n   */\r\n\tfunction getDenominatorFee() external view returns (uint8);\r\n\r\n\r\n   /**\r\n\t* @dev Indicate that this contract is available to sell.\r\n\t* It should only be called by the owner.\r\n\t* It should emit an event in order to allow anyone to monitor new opportunities to buy.\r\n\t* @param priceInWei Price that the owner wants to sell this contract (in Wei)\r\n\t* @param hDescription Hash to the description of this contract \r\n\t*/\r\n \tfunction setAvailableToSell (uint128 priceInWei, string hDescription) external;\r\n\r\n  function cancelSellingAction() external;\r\n\r\n\r\n   /**\r\n\t* @dev Change the ownership of this contract. It happens when someone buys an available to sell contract.\r\n\t* This functions is payable - It should receive necessary money to cover the contract price.\r\n\t*\r\n    * This function is marked as untrusted since this smart contract cannot trust the code of external calls.\r\n\t*\r\n\t* It should emit an event with the old and new owners.\r\n\t*/\r\n\tfunction untrustedChangeOwnershipWithTrade () payable external;\r\n\r\n   /**\r\n\t* @dev Since this contract represents a wallet it is worth to enable the possibility to receive ether.\r\n\t*/\r\n\tfunction() payable external;\r\n\r\n\r\n  /**\r\n   * @dev Transfer tokens from external contracts to the owner of its contract. \r\n   *\r\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\n   *\r\n   * It should emit an event representing the withdraw. \r\n   * It should only be called by the owner.\r\n   * \r\n   * @param tokenAddr address of tokens to be transfered.\r\n   * @param value Value of tokens to be withdraw.\r\n   * @return bool from the transfer function in tokenAddr.\r\n   */\r\n\tfunction makeUntrustedWithdrawalOfTokens(address tokenAddr, uint256 value) external returns (bool);\r\n\r\n\r\n  /**\r\n   * @dev Transfer ether from external contracts to the owner of its contract. \r\n   *\r\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\n   * It does not return any value, throwing an exception in case of failure.\r\n   *\r\n   * It should emit an event representing the withdraw. \r\n   * It should only be called by the owner.\r\n   * \r\n   * @param valueInWei Value of ether to be withdraw (in Wei).\r\n   */\r\n\tfunction makeUntrustWithdrawOfEther(uint256 valueInWei) external;\r\n\r\n  /**\r\n   * @dev Transfer tokens from this contract to an external account. \r\n   *\r\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\n   *\r\n   * It should emit an event representing the transfer. \r\n   * It should only be called by the owner.\r\n   * \r\n   * @param tokenAddr address of tokens to be transfered.\r\n   * @param to address to be transfered.\r\n   * @param value Value of tokens to be transfered.\r\n   */\r\n\tfunction makeUntrustedTokenTransferToOutside(address tokenAddr, address to, uint256 value) external returns (bool);\r\n\r\n\r\n  /**\r\n   * @dev Transfer Ether from this contract to an external account.\r\n   *\r\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\n   * It does not return any value, throwing an exception in case of failure.\r\n   *\r\n   * It should emit an event representing the transfer. \r\n   * It should only be called by the owner.\r\n   * \r\n   * @param to address to be transfered.\r\n   * @param valueInWei Value of ether to be transfered.\r\n   */\r\n\tfunction makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei) external;\r\n\r\n  /**\r\n   * @dev Transfer Ether from this contract to an external account.\r\n   * If there is hexData, it works as a relayer fowarding the data\r\n   *\r\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\n   * It does not return any value, throwing an exception in case of failure.\r\n   *\r\n   * It should emit an event representing the transfer. \r\n   * It should only be called by the owner.\r\n   * \r\n   * @param to address to be transfered.\r\n   * @param valueInWei Value of ether to be transfered.\r\n   * @param hexData is the SHA3 of the function+ (if any) params to be called. \r\n   *        It can accept any number of bytes, as they are relayed to the next call. \r\n   *        If hexData has length 0, no data will be send \r\n   */\r\n\tfunction makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei, bytes hexData) external;\r\n\r\n  /**\r\n   * @dev Return the ether balance of this contract. \r\n   * @return ether balance of this contract\r\n   */\r\n\tfunction getEtherBalance () external view returns (uint256);\r\n\r\n  /**\r\n   * @dev Return the token balance of this contract.\r\n   * @param tokenAddr the address of the token which balance will be returned \r\n   * @return token balance of this contract\r\n   */\r\n\tfunction getTokenBalanceOf (address tokenAddr) external view returns (uint256);\r\n\r\n\r\n  function tokenFallback(address _from, uint _value, bytes _data) external;\r\n\r\n  function getTotalBlocksToFinishFrontRunningRiskExternal () view external returns (uint256);\r\n\r\n  function getFeeContractAddress() view external returns (address);\r\n\r\n\r\n\r\n}\r\n\r\n\r\n",
   "sourcePath": "C:\\workspace\\tradeable-wallet\\back-blockchain\\contracts\\ITradeableContract.sol",
   "ast": {
     "absolutePath": "/C/workspace/tradeable-wallet/back-blockchain/contracts/ITradeableContract.sol",
     "exportedSymbols": {
       "ITradeableContract": [
-        662
+        669
       ]
     },
-    "id": 663,
+    "id": 670,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -425,9 +443,9 @@
         "contractKind": "interface",
         "documentation": "@title ITradeableContract\r\n@dev Contract that represent a Wallet, whose ownership can be traded (sell/buy).\r\nThis contract can be used to receive tokens, and has a specific function to withdraw these tokens. \r",
         "fullyImplemented": false,
-        "id": 662,
+        "id": 669,
         "linearizedBaseContracts": [
-          662
+          669
         ],
         "name": "ITradeableContract",
         "nodeType": "ContractDefinition",
@@ -962,7 +980,7 @@
               ],
               "src": "1558:9:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "1516:52:4",
             "stateMutability": "view",
             "superFunction": null,
@@ -1018,7 +1036,7 @@
               ],
               "src": "1757:8:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "1705:61:4",
             "stateMutability": "view",
             "superFunction": null,
@@ -1074,7 +1092,7 @@
               "parameters": [],
               "src": "2016:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "1956:61:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1130,7 +1148,7 @@
               ],
               "src": "2275:8:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "2222:62:4",
             "stateMutability": "view",
             "superFunction": null,
@@ -1186,7 +1204,7 @@
               ],
               "src": "2549:7:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "2498:59:4",
             "stateMutability": "view",
             "superFunction": null,
@@ -1268,7 +1286,7 @@
               "parameters": [],
               "src": "2994:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "2916:79:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1297,7 +1315,7 @@
               "parameters": [],
               "src": "3040:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "3001:40:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1326,7 +1344,7 @@
               "parameters": [],
               "src": "3502:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "3440:63:4",
             "stateMutability": "payable",
             "superFunction": null,
@@ -1355,7 +1373,7 @@
               "parameters": [],
               "src": "3653:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "3626:28:4",
             "stateMutability": "payable",
             "superFunction": null,
@@ -1464,7 +1482,7 @@
               ],
               "src": "4239:6:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "4147:99:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1520,7 +1538,7 @@
               "parameters": [],
               "src": "4774:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "4710:65:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1655,7 +1673,7 @@
               ],
               "src": "5347:6:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "5239:115:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -1663,8 +1681,8 @@
           },
           {
             "body": null,
-            "documentation": "@dev Transfer Ether from this contract to an external account.\r\nIf there is hexData, it works as a relayer fowarding the data\r\n\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\nIt does not return any value, throwing an exception in case of failure.\r\n\n   * It should emit an event representing the transfer. \r\nIt should only be called by the owner.\r\n\r\n@param to address to be transfered.\r\n@param valueInWei Value of ether to be transfered.\r\n@param hexData is the SHA3 of the function+ (if any) params to be called. \r\n       It can accept any number of bytes, as they are relayed to the next call.  \r",
-            "id": 630,
+            "documentation": "@dev Transfer Ether from this contract to an external account.\r\n\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\nIt does not return any value, throwing an exception in case of failure.\r\n\n   * It should emit an event representing the transfer. \r\nIt should only be called by the owner.\r\n\r\n@param to address to be transfered.\r\n@param valueInWei Value of ether to be transfered.\r",
+            "id": 628,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -1672,7 +1690,7 @@
             "name": "makeUntrustedEtherTransferToOutside",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 628,
+              "id": 626,
               "nodeType": "ParameterList",
               "parameters": [
                 {
@@ -1680,8 +1698,8 @@
                   "id": 623,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 630,
-                  "src": "6123:10:4",
+                  "scope": 628,
+                  "src": "5886:10:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1692,7 +1710,7 @@
                     "id": 622,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6123:7:4",
+                    "src": "5886:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1706,8 +1724,8 @@
                   "id": 625,
                   "name": "valueInWei",
                   "nodeType": "VariableDeclaration",
-                  "scope": 630,
-                  "src": "6135:18:4",
+                  "scope": 628,
+                  "src": "5898:18:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1718,7 +1736,89 @@
                     "id": 624,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6135:7:4",
+                    "src": "5898:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5885:32:4"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 627,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5926:0:4"
+            },
+            "scope": 669,
+            "src": "5841:86:4",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Transfer Ether from this contract to an external account.\r\nIf there is hexData, it works as a relayer fowarding the data\r\n\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\nIt does not return any value, throwing an exception in case of failure.\r\n\n   * It should emit an event representing the transfer. \r\nIt should only be called by the owner.\r\n\r\n@param to address to be transfered.\r\n@param valueInWei Value of ether to be transfered.\r\n@param hexData is the SHA3 of the function+ (if any) params to be called. \r\n       It can accept any number of bytes, as they are relayed to the next call. \r\n       If hexData has length 0, no data will be send \r",
+            "id": 637,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "makeUntrustedEtherTransferToOutside",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 635,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 630,
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 637,
+                  "src": "6753:10:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 629,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6753:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 632,
+                  "name": "valueInWei",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 637,
+                  "src": "6765:18:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 631,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6765:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1729,11 +1829,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 627,
+                  "id": 634,
                   "name": "hexData",
                   "nodeType": "VariableDeclaration",
-                  "scope": 630,
-                  "src": "6155:13:4",
+                  "scope": 637,
+                  "src": "6785:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1741,10 +1841,10 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 626,
+                    "id": 633,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6155:5:4",
+                    "src": "6785:5:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes_storage_ptr",
                       "typeString": "bytes"
@@ -1754,17 +1854,17 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6122:47:4"
+              "src": "6752:47:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 629,
+              "id": 636,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "6178:0:4"
+              "src": "6808:0:4"
             },
-            "scope": 662,
-            "src": "6078:101:4",
+            "scope": 669,
+            "src": "6708:101:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -1772,7 +1872,7 @@
           {
             "body": null,
             "documentation": "@dev Return the ether balance of this contract. \r\n@return ether balance of this contract\r",
-            "id": 635,
+            "id": 642,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -1780,93 +1880,10 @@
             "name": "getEtherBalance",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 631,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "6323:2:4"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 634,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 633,
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 635,
-                  "src": "6349:7:4",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 632,
-                    "name": "uint256",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "6349:7:4",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "6348:9:4"
-            },
-            "scope": 662,
-            "src": "6298:60:4",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "external"
-          },
-          {
-            "body": null,
-            "documentation": "@dev Return the token balance of this contract.\r\n@param tokenAddr the address of the token which balance will be returned \r\n@return token balance of this contract\r",
-            "id": 642,
-            "implemented": false,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "getTokenBalanceOf",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
               "id": 638,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 637,
-                  "name": "tokenAddr",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 642,
-                  "src": "6584:17:4",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 636,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "6584:7:4",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "6583:19:4"
+              "parameters": [],
+              "src": "6953:2:4"
             },
             "payable": false,
             "returnParameters": {
@@ -1879,7 +1896,7 @@
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 642,
-                  "src": "6626:7:4",
+                  "src": "6979:7:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1890,7 +1907,7 @@
                     "id": 639,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6626:7:4",
+                    "src": "6979:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1900,35 +1917,35 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6625:9:4"
+              "src": "6978:9:4"
             },
-            "scope": 662,
-            "src": "6556:79:4",
+            "scope": 669,
+            "src": "6928:60:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           },
           {
             "body": null,
-            "documentation": null,
-            "id": 651,
+            "documentation": "@dev Return the token balance of this contract.\r\n@param tokenAddr the address of the token which balance will be returned \r\n@return token balance of this contract\r",
+            "id": 649,
             "implemented": false,
             "isConstructor": false,
-            "isDeclaredConst": false,
+            "isDeclaredConst": true,
             "modifiers": [],
-            "name": "tokenFallback",
+            "name": "getTokenBalanceOf",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 649,
+              "id": 645,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
                   "id": 644,
-                  "name": "_from",
+                  "name": "tokenAddr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 651,
-                  "src": "6666:13:4",
+                  "scope": 649,
+                  "src": "7214:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1939,7 +1956,90 @@
                     "id": 643,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6666:7:4",
+                    "src": "7214:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7213:19:4"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 648,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 647,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 649,
+                  "src": "7256:7:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 646,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7256:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7255:9:4"
+            },
+            "scope": 669,
+            "src": "7186:79:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 658,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "tokenFallback",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 656,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 651,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 658,
+                  "src": "7296:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 650,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7296:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -1950,11 +2050,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 646,
+                  "id": 653,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 651,
-                  "src": "6681:11:4",
+                  "scope": 658,
+                  "src": "7311:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1962,10 +2062,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 645,
+                    "id": 652,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6681:4:4",
+                    "src": "7311:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1976,11 +2076,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 648,
+                  "id": 655,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 651,
-                  "src": "6694:11:4",
+                  "scope": 658,
+                  "src": "7324:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1988,10 +2088,10 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 647,
+                    "id": 654,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6694:5:4",
+                    "src": "7324:5:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes_storage_ptr",
                       "typeString": "bytes"
@@ -2001,17 +2101,17 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6665:41:4"
+              "src": "7295:41:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 650,
+              "id": 657,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "6715:0:4"
+              "src": "7345:0:4"
             },
-            "scope": 662,
-            "src": "6643:73:4",
+            "scope": 669,
+            "src": "7273:73:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -2019,7 +2119,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 656,
+            "id": 663,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -2027,23 +2127,23 @@
             "name": "getTotalBlocksToFinishFrontRunningRiskExternal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 652,
+              "id": 659,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "6778:2:4"
+              "src": "7408:2:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 655,
+              "id": 662,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 654,
+                  "id": 661,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 656,
-                  "src": "6804:7:4",
+                  "scope": 663,
+                  "src": "7434:7:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2051,10 +2151,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 653,
+                    "id": 660,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6804:7:4",
+                    "src": "7434:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2064,10 +2164,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6803:9:4"
+              "src": "7433:9:4"
             },
-            "scope": 662,
-            "src": "6722:91:4",
+            "scope": 669,
+            "src": "7352:91:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
@@ -2075,7 +2175,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 661,
+            "id": 668,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -2083,23 +2183,23 @@
             "name": "getFeeContractAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 657,
+              "id": 664,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "6849:2:4"
+              "src": "7479:2:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 660,
+              "id": 667,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 659,
+                  "id": 666,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 661,
-                  "src": "6875:7:4",
+                  "scope": 668,
+                  "src": "7505:7:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2107,10 +2207,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 658,
+                    "id": 665,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6875:7:4",
+                    "src": "7505:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -2120,29 +2220,29 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6874:9:4"
+              "src": "7504:9:4"
             },
-            "scope": 662,
-            "src": "6819:65:4",
+            "scope": 669,
+            "src": "7449:65:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 663,
-        "src": "257:6636:4"
+        "scope": 670,
+        "src": "257:7266:4"
       }
     ],
-    "src": "0:6899:4"
+    "src": "0:7529:4"
   },
   "legacyAST": {
     "absolutePath": "/C/workspace/tradeable-wallet/back-blockchain/contracts/ITradeableContract.sol",
     "exportedSymbols": {
       "ITradeableContract": [
-        662
+        669
       ]
     },
-    "id": 663,
+    "id": 670,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -2162,9 +2262,9 @@
         "contractKind": "interface",
         "documentation": "@title ITradeableContract\r\n@dev Contract that represent a Wallet, whose ownership can be traded (sell/buy).\r\nThis contract can be used to receive tokens, and has a specific function to withdraw these tokens. \r",
         "fullyImplemented": false,
-        "id": 662,
+        "id": 669,
         "linearizedBaseContracts": [
-          662
+          669
         ],
         "name": "ITradeableContract",
         "nodeType": "ContractDefinition",
@@ -2699,7 +2799,7 @@
               ],
               "src": "1558:9:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "1516:52:4",
             "stateMutability": "view",
             "superFunction": null,
@@ -2755,7 +2855,7 @@
               ],
               "src": "1757:8:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "1705:61:4",
             "stateMutability": "view",
             "superFunction": null,
@@ -2811,7 +2911,7 @@
               "parameters": [],
               "src": "2016:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "1956:61:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -2867,7 +2967,7 @@
               ],
               "src": "2275:8:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "2222:62:4",
             "stateMutability": "view",
             "superFunction": null,
@@ -2923,7 +3023,7 @@
               ],
               "src": "2549:7:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "2498:59:4",
             "stateMutability": "view",
             "superFunction": null,
@@ -3005,7 +3105,7 @@
               "parameters": [],
               "src": "2994:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "2916:79:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -3034,7 +3134,7 @@
               "parameters": [],
               "src": "3040:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "3001:40:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -3063,7 +3163,7 @@
               "parameters": [],
               "src": "3502:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "3440:63:4",
             "stateMutability": "payable",
             "superFunction": null,
@@ -3092,7 +3192,7 @@
               "parameters": [],
               "src": "3653:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "3626:28:4",
             "stateMutability": "payable",
             "superFunction": null,
@@ -3201,7 +3301,7 @@
               ],
               "src": "4239:6:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "4147:99:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -3257,7 +3357,7 @@
               "parameters": [],
               "src": "4774:0:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "4710:65:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -3392,7 +3492,7 @@
               ],
               "src": "5347:6:4"
             },
-            "scope": 662,
+            "scope": 669,
             "src": "5239:115:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -3400,8 +3500,8 @@
           },
           {
             "body": null,
-            "documentation": "@dev Transfer Ether from this contract to an external account.\r\nIf there is hexData, it works as a relayer fowarding the data\r\n\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\nIt does not return any value, throwing an exception in case of failure.\r\n\n   * It should emit an event representing the transfer. \r\nIt should only be called by the owner.\r\n\r\n@param to address to be transfered.\r\n@param valueInWei Value of ether to be transfered.\r\n@param hexData is the SHA3 of the function+ (if any) params to be called. \r\n       It can accept any number of bytes, as they are relayed to the next call.  \r",
-            "id": 630,
+            "documentation": "@dev Transfer Ether from this contract to an external account.\r\n\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\nIt does not return any value, throwing an exception in case of failure.\r\n\n   * It should emit an event representing the transfer. \r\nIt should only be called by the owner.\r\n\r\n@param to address to be transfered.\r\n@param valueInWei Value of ether to be transfered.\r",
+            "id": 628,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": false,
@@ -3409,7 +3509,7 @@
             "name": "makeUntrustedEtherTransferToOutside",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 628,
+              "id": 626,
               "nodeType": "ParameterList",
               "parameters": [
                 {
@@ -3417,8 +3517,8 @@
                   "id": 623,
                   "name": "to",
                   "nodeType": "VariableDeclaration",
-                  "scope": 630,
-                  "src": "6123:10:4",
+                  "scope": 628,
+                  "src": "5886:10:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3429,7 +3529,7 @@
                     "id": 622,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6123:7:4",
+                    "src": "5886:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -3443,8 +3543,8 @@
                   "id": 625,
                   "name": "valueInWei",
                   "nodeType": "VariableDeclaration",
-                  "scope": 630,
-                  "src": "6135:18:4",
+                  "scope": 628,
+                  "src": "5898:18:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3455,7 +3555,89 @@
                     "id": 624,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6135:7:4",
+                    "src": "5898:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5885:32:4"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 627,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5926:0:4"
+            },
+            "scope": 669,
+            "src": "5841:86:4",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Transfer Ether from this contract to an external account.\r\nIf there is hexData, it works as a relayer fowarding the data\r\n\n   * This function is marked as untrusted since this smart contract cannot trust external calls.\r\nIt does not return any value, throwing an exception in case of failure.\r\n\n   * It should emit an event representing the transfer. \r\nIt should only be called by the owner.\r\n\r\n@param to address to be transfered.\r\n@param valueInWei Value of ether to be transfered.\r\n@param hexData is the SHA3 of the function+ (if any) params to be called. \r\n       It can accept any number of bytes, as they are relayed to the next call. \r\n       If hexData has length 0, no data will be send \r",
+            "id": 637,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "makeUntrustedEtherTransferToOutside",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 635,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 630,
+                  "name": "to",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 637,
+                  "src": "6753:10:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 629,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6753:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 632,
+                  "name": "valueInWei",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 637,
+                  "src": "6765:18:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 631,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6765:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3466,11 +3648,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 627,
+                  "id": 634,
                   "name": "hexData",
                   "nodeType": "VariableDeclaration",
-                  "scope": 630,
-                  "src": "6155:13:4",
+                  "scope": 637,
+                  "src": "6785:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3478,10 +3660,10 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 626,
+                    "id": 633,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6155:5:4",
+                    "src": "6785:5:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes_storage_ptr",
                       "typeString": "bytes"
@@ -3491,17 +3673,17 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6122:47:4"
+              "src": "6752:47:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 629,
+              "id": 636,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "6178:0:4"
+              "src": "6808:0:4"
             },
-            "scope": 662,
-            "src": "6078:101:4",
+            "scope": 669,
+            "src": "6708:101:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -3509,7 +3691,7 @@
           {
             "body": null,
             "documentation": "@dev Return the ether balance of this contract. \r\n@return ether balance of this contract\r",
-            "id": 635,
+            "id": 642,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -3517,93 +3699,10 @@
             "name": "getEtherBalance",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 631,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "6323:2:4"
-            },
-            "payable": false,
-            "returnParameters": {
-              "id": 634,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 633,
-                  "name": "",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 635,
-                  "src": "6349:7:4",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_uint256",
-                    "typeString": "uint256"
-                  },
-                  "typeName": {
-                    "id": 632,
-                    "name": "uint256",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "6349:7:4",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_uint256",
-                      "typeString": "uint256"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "6348:9:4"
-            },
-            "scope": 662,
-            "src": "6298:60:4",
-            "stateMutability": "view",
-            "superFunction": null,
-            "visibility": "external"
-          },
-          {
-            "body": null,
-            "documentation": "@dev Return the token balance of this contract.\r\n@param tokenAddr the address of the token which balance will be returned \r\n@return token balance of this contract\r",
-            "id": 642,
-            "implemented": false,
-            "isConstructor": false,
-            "isDeclaredConst": true,
-            "modifiers": [],
-            "name": "getTokenBalanceOf",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
               "id": 638,
               "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 637,
-                  "name": "tokenAddr",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 642,
-                  "src": "6584:17:4",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 636,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "6584:7:4",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "6583:19:4"
+              "parameters": [],
+              "src": "6953:2:4"
             },
             "payable": false,
             "returnParameters": {
@@ -3616,7 +3715,7 @@
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "scope": 642,
-                  "src": "6626:7:4",
+                  "src": "6979:7:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3627,7 +3726,7 @@
                     "id": 639,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6626:7:4",
+                    "src": "6979:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3637,35 +3736,35 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6625:9:4"
+              "src": "6978:9:4"
             },
-            "scope": 662,
-            "src": "6556:79:4",
+            "scope": 669,
+            "src": "6928:60:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           },
           {
             "body": null,
-            "documentation": null,
-            "id": 651,
+            "documentation": "@dev Return the token balance of this contract.\r\n@param tokenAddr the address of the token which balance will be returned \r\n@return token balance of this contract\r",
+            "id": 649,
             "implemented": false,
             "isConstructor": false,
-            "isDeclaredConst": false,
+            "isDeclaredConst": true,
             "modifiers": [],
-            "name": "tokenFallback",
+            "name": "getTokenBalanceOf",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 649,
+              "id": 645,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
                   "id": 644,
-                  "name": "_from",
+                  "name": "tokenAddr",
                   "nodeType": "VariableDeclaration",
-                  "scope": 651,
-                  "src": "6666:13:4",
+                  "scope": 649,
+                  "src": "7214:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3676,7 +3775,90 @@
                     "id": 643,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6666:7:4",
+                    "src": "7214:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7213:19:4"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 648,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 647,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 649,
+                  "src": "7256:7:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 646,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7256:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7255:9:4"
+            },
+            "scope": 669,
+            "src": "7186:79:4",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 658,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": false,
+            "modifiers": [],
+            "name": "tokenFallback",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 656,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 651,
+                  "name": "_from",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 658,
+                  "src": "7296:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 650,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7296:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -3687,11 +3869,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 646,
+                  "id": 653,
                   "name": "_value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 651,
-                  "src": "6681:11:4",
+                  "scope": 658,
+                  "src": "7311:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3699,10 +3881,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 645,
+                    "id": 652,
                     "name": "uint",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6681:4:4",
+                    "src": "7311:4:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3713,11 +3895,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 648,
+                  "id": 655,
                   "name": "_data",
                   "nodeType": "VariableDeclaration",
-                  "scope": 651,
-                  "src": "6694:11:4",
+                  "scope": 658,
+                  "src": "7324:11:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3725,10 +3907,10 @@
                     "typeString": "bytes"
                   },
                   "typeName": {
-                    "id": 647,
+                    "id": 654,
                     "name": "bytes",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6694:5:4",
+                    "src": "7324:5:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bytes_storage_ptr",
                       "typeString": "bytes"
@@ -3738,17 +3920,17 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6665:41:4"
+              "src": "7295:41:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 650,
+              "id": 657,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "6715:0:4"
+              "src": "7345:0:4"
             },
-            "scope": 662,
-            "src": "6643:73:4",
+            "scope": 669,
+            "src": "7273:73:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -3756,7 +3938,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 656,
+            "id": 663,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -3764,23 +3946,23 @@
             "name": "getTotalBlocksToFinishFrontRunningRiskExternal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 652,
+              "id": 659,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "6778:2:4"
+              "src": "7408:2:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 655,
+              "id": 662,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 654,
+                  "id": 661,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 656,
-                  "src": "6804:7:4",
+                  "scope": 663,
+                  "src": "7434:7:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3788,10 +3970,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 653,
+                    "id": 660,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6804:7:4",
+                    "src": "7434:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -3801,10 +3983,10 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6803:9:4"
+              "src": "7433:9:4"
             },
-            "scope": 662,
-            "src": "6722:91:4",
+            "scope": 669,
+            "src": "7352:91:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
@@ -3812,7 +3994,7 @@
           {
             "body": null,
             "documentation": null,
-            "id": 661,
+            "id": 668,
             "implemented": false,
             "isConstructor": false,
             "isDeclaredConst": true,
@@ -3820,23 +4002,23 @@
             "name": "getFeeContractAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 657,
+              "id": 664,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "6849:2:4"
+              "src": "7479:2:4"
             },
             "payable": false,
             "returnParameters": {
-              "id": 660,
+              "id": 667,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 659,
+                  "id": 666,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 661,
-                  "src": "6875:7:4",
+                  "scope": 668,
+                  "src": "7505:7:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -3844,10 +4026,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 658,
+                    "id": 665,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "6875:7:4",
+                    "src": "7505:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
                       "typeString": "address"
@@ -3857,20 +4039,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "6874:9:4"
+              "src": "7504:9:4"
             },
-            "scope": 662,
-            "src": "6819:65:4",
+            "scope": 669,
+            "src": "7449:65:4",
             "stateMutability": "view",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 663,
-        "src": "257:6636:4"
+        "scope": 670,
+        "src": "257:7266:4"
       }
     ],
-    "src": "0:6899:4"
+    "src": "0:7529:4"
   },
   "compiler": {
     "name": "solc",
@@ -3878,5 +4060,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-11-07T02:16:54.786Z"
+  "updatedAt": "2018-11-13T03:29:06.597Z"
 }
