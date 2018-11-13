@@ -162,7 +162,7 @@ contract TradeableContract is ITradeableContract {
 
 		// CHECK - calculating values to transfer 
 		require (isAvailableToSell==true);
-		require (msg.value >= priceToSellInWei);     
+		require (msg.value == priceToSellInWei);     
 
 		//EFFECTS
 		address oldOwner = owner;      

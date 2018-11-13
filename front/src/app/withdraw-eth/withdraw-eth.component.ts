@@ -53,7 +53,60 @@ export class WithdrawEthComponent implements OnInit {
         }, function(e) {
             console.log("Balance Error: " + e);
         });   
- }
+  }
+
+    getWalletInfo() {
+        console.log("getWalletInfo");
+        
+        this.getEthBalance();
+
+        let self = this;
+        self.errorFront = "";
+        self.errorBack = "";
+
+        this.blockchainService.getInfoIfIsAvailableToSell(self.tradeableWalletAddress,
+            
+            function(isAvailableToSell) {
+                
+                if (isAvailableToSell) {
+                    self.errorFront = "It is not possible to withdraw when the wallet is available to sell";
+                }
+                else {
+                    console.log("fSucess else");
+
+                    self.blockchainService.getTotalBlocksToFinishFrontRunningRiskExternal(self.tradeableWalletAddress,
+
+                                function(result) {
+                                console.log("result=" + result);
+
+                                    if (result!=0) {
+                                        self.errorFront = "You still have to wait " + result + " blocks before be able to withdraw";
+                                    }
+                                    else {
+                                        console.log("it is possible to withdraw");
+                                        
+                                    }
+
+                                }, 
+                                function(e) {
+                                    console.log("erro aninhado");
+
+                                   console.log("getTotalBlocksError: " + e);
+                                }
+                    );  //close  getTotalBlocksToFinishFrontRunningRiskExternal
+
+                    console.log("fim fSucess else");
+
+
+                    } //cloese else
+               },
+            function(e) {
+                console.log("getInfoError: " + e);
+            });   
+        
+        
+    }
+ 
 
   withdrawEth(){
 
