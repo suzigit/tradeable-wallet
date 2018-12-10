@@ -1,5 +1,10 @@
 <div class="container">
 
+<div *ngIf="notification && showNotification"
+     class="notification">
+    <p>{{ notification }}</p>
+</div>
+
 <div class="btn-group">
 
   <button class="btn btn-secondary dropdown-toggle btn btn-lg btn-success" type="button" id="dropdownAcquire" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

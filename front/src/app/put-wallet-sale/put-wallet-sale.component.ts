@@ -14,15 +14,17 @@ export class PutWalletSaleComponent implements OnInit {
 
   selectedAccount: any;  
   tradeableWalletAddress: string;
-  priceInGWei: number; //TODO: Deal with floating point
+  priceInGWei: string; //TODO: Deal with floating point
   newSellHash: string;
   errorFront: string;
   errorBack: string;
-  description: string;
+  description: any;
   hashDescription: string;
   errorSaveDescription: string;
   percentualFee: string;
   isTermsOfServiceChecked: boolean;
+  lastTradeableWalletAddress: string;
+  
 
   
   constructor(private blockchainService: BlockchainService, private descriptionService: DescriptionService ) { 
@@ -66,7 +68,7 @@ export class PutWalletSaleComponent implements OnInit {
                 }
                 else {
                     self.errorSaveDescription = "No data";
-                    console.log("nao retornou data");
+                    console.log("no data");
                 }
             },
             error => {
@@ -81,22 +83,86 @@ export class PutWalletSaleComponent implements OnInit {
   
   }
 
+ getWalletInfo() {
 
-  getPercentualFee() {
+       this.errorFront = undefined;
 
        let self = this;
 
-       if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {
 
-            this.blockchainService.getPercentualFee(self.tradeableWalletAddress,
+      if (this.tradeableWalletAddress != this.lastTradeableWalletAddress) {
+            this.lastTradeableWalletAddress = this.tradeableWalletAddress;
+
+            let self = this;
+
+            if (!this.blockchainService.isAddress(self.tradeableWalletAddress)) {
+                this.errorFront = "It is not a valid address - Tradeable Wallet";
+                console.log("Invalid Address");
+                return;
+            }        
+            
+            this.blockchainService.getPriceToBuyInGWei(self.tradeableWalletAddress,
             function(result) {
-                self.percentualFee = result;
-            }, function(error) {
-                console.error("could not retrieve percentual fee");
+                console.log("Buy sucess: " + result);
+                if (result>=0) {
+                    self.priceInGWei = result;
+                }
+                else {
+                    self.priceInGWei = "N/A";
+                    self.errorFront = "This Tradeable Wallet is not available to sell.";
+                    console.log("Wallet is not available to sell");                        
+                }
+
+            }, function(e) {                 
+                console.log("Buy error: " + e);
+                self.priceInGWei = "N/A";
             });
 
-       }
-  }
+            self.description = "";   
+            this.blockchainService.getHashDescription(self.tradeableWalletAddress,
+            function(hash) {
+                console.log("Hash sucess: " + hash);
+
+                if (hash) {
+
+                    self.descriptionService.get(hash).subscribe(
+                        data => {
+                            if (data) {
+                                self.description = data;
+                                self.hashDescription = hash;
+                                console.log("data from ipfs");
+                                console.log(data);
+
+                            }
+                            else {
+                                console.log("no data");
+                            }
+                        },
+                        error => {
+                            console.log("error getFile");
+                            console.log(error);
+                        });
+
+                }  
+
+            }, function(e) {
+                console.log("Hash error: " + e);
+            });
+
+
+        this.blockchainService.getPercentualFee(self.tradeableWalletAddress,
+        function(result) {
+            self.percentualFee = result;
+        }, function(error) {
+            self.percentualFee = "XX";
+            self.errorFront = "It was not possible to recover the Percentual Fee of this address. Maybe it is not a Tradeable Wallet.";
+            console.error("could not retrieve percentual fee");
+        });
+ 
+      }
+ }
+
+
 
 
 
@@ -120,9 +186,12 @@ export class PutWalletSaleComponent implements OnInit {
           return;
         }  
 
-        console.log("All conditions ok - put wallet for sale!");            
+        console.log("All conditions ok - put wallet for sale!");          
+        console.log(self);          
 
-        this.blockchainService.setAvailableToSell(self.tradeableWalletAddress, self.priceInGWei,
+        let price = +self.priceInGWei;  
+
+        this.blockchainService.setAvailableToSell(self.tradeableWalletAddress, price,
         self.hashDescription, function(result) {
             console.log("sell sucess: " + result);
             self.newSellHash = result;

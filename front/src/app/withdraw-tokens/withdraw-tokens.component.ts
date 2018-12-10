@@ -44,18 +44,40 @@ export class WithdrawTokensComponent implements OnInit {
 
         console.log("getTokensBalance");
 
+        if (!this.blockchainService.isAddress(this.tradeableWalletAddress)) {
+            this.errorFront = "It is not a valid address - Tradeable Wallet";
+            console.log("Invalid Address");
+            return;
+        }        
+        if (!this.blockchainService.isAddress(this.tokensAddress)) {
+            this.errorFront = "It is not a valid address - Token Address";
+            console.log("Invalid Address");
+            return;
+        }        
+
+
         let self = this;
         this.blockchainService.getTokenBalanceOf(self.tradeableWalletAddress,self.tokensAddress,
             function(result) {
                 console.log(result);
                 self.sBalance = result;
             }, function(e) {
+                self.sBalance = "N/A";
+                self.errorFront = "It was not possible to recover the token balance";
                 console.log("Balance Error: " + e);
             });   
     }
 
     getWalletInfo() {
         console.log("getWalletInfo");
+         this.errorFront = undefined;
+
+        if (!this.blockchainService.isAddress(this.tradeableWalletAddress)) {
+            this.errorFront = "It is not a valid address - Tradeable Wallet";
+            console.log("Invalid Address");
+            return;
+        }        
+        
         let self = this;
         self.errorFront = "";
         self.errorBack = "";
@@ -94,9 +116,10 @@ export class WithdrawTokensComponent implements OnInit {
                     console.log("fim fSucess else");
 
 
-                    } //cloese else
+                    } //close else
                },
             function(e) {
+                self.errorFront = "It was not possible to verify if this wallet is available to sell. Maybe it is not a Tradeable Wallet";
                 console.log("getInfoError: " + e);
             });   
         

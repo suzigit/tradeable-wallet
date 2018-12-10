@@ -55,12 +55,21 @@ export class SendEthComponent implements OnInit {
             console.log(result);
             self.sBalance = result;
         }, function(e) {
+            self.errorFront = "It was not possible to recover the balance of this address. Maybe it is not a Tradeable Wallet.";            
             console.log("Balance Error: " + e);
         });   
  }
 
     getWalletInfo() {
         console.log("getWalletInfo");
+        
+       this.errorFront = undefined;
+        
+        if (!this.blockchainService.isAddress(this.tradeableWalletAddress)) {
+            this.errorFront = "It is not a valid address - Tradeable Wallet";
+            console.log("Invalid Address");
+            return;
+        }        
         
         this.getEthBalance();
 

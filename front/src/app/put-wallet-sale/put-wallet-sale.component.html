@@ -9,17 +9,17 @@
   </div>
     <div class="row">
     <label>Enter the address of your Tradeable Wallet:
-      <input type="text" [(ngModel)]="tradeableWalletAddress" (ngModelChange)="getPercentualFee()" placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+      <input type="text" [(ngModel)]="tradeableWalletAddress" (ngModelChange)="getWalletInfo()" placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
     </label>
   </div>
    <div class="row">
     <label>Enter the price of your Tradeable Wallet (in GWei):
-      <input type="number" [(ngModel)]="priceInGWei" maxlength="20" size="10">
+      <input type="text" [(ngModel)]="priceInGWei" maxlength="20" size="10">
     </label>
   </div>
    <div class="row">
     <label>Price of your Tradeable Wallet (in ETH):
-      <input type="number" [ngModel]="convertPriceToETH()" maxlength="20" size="10" readonly disabled>
+      <input type="text" [ngModel]="convertPriceToETH()" maxlength="20" size="10" readonly disabled>
     </label>
   </div>
 
@@ -52,8 +52,8 @@
 
   <div class="row" *ngIf="newSellHash">
     <div class="card bg-light">
-    <label>See your transaction on EtherScan by using this hash: {{newSellHash.transactionHash}}
-      </label>
+    <label>See your transaction on EtherScan by using this hash: {{newSellHash.transactionHash}}.</label>
+    <label>Be in mind that you cannot move ETH or tokens within the next blocks in order to prevent front running attacks.</label>
       </div>
   </div>     
 

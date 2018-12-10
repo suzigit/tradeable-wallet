@@ -51,13 +51,23 @@ export class WithdrawEthComponent implements OnInit {
             console.log(result);
             self.sBalance = result;
         }, function(e) {
+            self.errorFront = "It was not possible to recover the balance of this address. Maybe it is not a Tradeable Wallet.";
             console.log("Balance Error: " + e);
         });   
   }
 
     getWalletInfo() {
+
         console.log("getWalletInfo");
         
+         this.errorFront = undefined;
+
+        if (!this.blockchainService.isAddress(this.tradeableWalletAddress)) {
+            this.errorFront = "It is not a valid address - Tradeable Wallet";
+            console.log("Invalid Address");
+            return;
+        }        
+
         this.getEthBalance();
 
         let self = this;
@@ -98,7 +108,7 @@ export class WithdrawEthComponent implements OnInit {
                     console.log("fim fSucess else");
 
 
-                    } //cloese else
+                    } //close else
                },
             function(e) {
                 console.log("getInfoError: " + e);
@@ -141,7 +151,6 @@ export class WithdrawEthComponent implements OnInit {
         }, function(e) {
             console.log("withdraw  error: " + e);
             self.errorBack = e;
-            self.sBalance = "";            
         });
 
   }

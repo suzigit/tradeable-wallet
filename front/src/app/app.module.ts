@@ -4,6 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { AngularFontAwesomeModule  } from 'angular-font-awesome';
 import { HttpClientModule } from '@angular/common/http';
 
+import { ErrorHandler} from '@angular/core';
+import { ErrorsHandler} from './errors-handler';
+import { NotificationService} from './notification-service';
+
 
 import {AppLoadModule} from './app-load/app-load.module';
 import { AppComponent } from './app.component';
@@ -46,7 +50,15 @@ import { CancelSellingComponent } from './cancel-selling/cancel-selling.componen
     AngularFontAwesomeModule,
     AppLoadModule 
   ],
-  providers: [BlockchainService, DescriptionService],
+  providers: [
+    BlockchainService, 
+    DescriptionService,
+    {
+      provide: ErrorHandler,
+      useClass: ErrorsHandler,
+    },
+    NotificationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

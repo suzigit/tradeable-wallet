@@ -18,7 +18,6 @@ export class CancelSellingComponent implements OnInit {
   description: any;
   errorFront: string;
   errorBack: string;
-  percentualFee: string;
 
   lastTradeableWalletAddress: string;
   isTermsOfServiceChecked: boolean;
@@ -26,7 +25,6 @@ export class CancelSellingComponent implements OnInit {
   constructor(private blockchainService: BlockchainService, private descriptionService: DescriptionService) { 
 
       let self = this;
-      self.percentualFee = "XX";      
 
       setInterval(function () {
 
@@ -56,65 +54,62 @@ export class CancelSellingComponent implements OnInit {
             this.lastTradeableWalletAddress = this.tradeableWalletAddress;
 
             let self = this;
-            if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {            
 
-                this.blockchainService.getPriceToBuyInGWei(self.tradeableWalletAddress,
-                function(result) {
-                    console.log("Buy sucess: " + result);
-                    if (result>=0) {
-                        self.priceInGWei = result;
-                    }
-                    else {
-                        self.priceInGWei = "N/A";
-                         self.errorFront = "This Wallet is not available to sell";
-                        console.log("Wallet is not available to sell");                        
-                    }
+            if (!this.blockchainService.isAddress(self.tradeableWalletAddress)) {
+                this.errorFront = "It is not a valid address - Tradeable Wallet";
+                console.log("Invalid Address");
+                return;
+            }        
 
-                }, function(e) {
-                    console.log("Buy error: " + e);
+
+            this.blockchainService.getPriceToBuyInGWei(self.tradeableWalletAddress,
+            function(result) {
+                console.log("Buy sucess: " + result);
+                if (result>=0) {
+                    self.priceInGWei = result;
+                }
+                else {
                     self.priceInGWei = "N/A";
-                });
+                    self.errorFront = "This Tradeable Wallet is not available to sell.";
+                    console.log("Wallet is not available to sell");                        
+                }
 
-                self.description = "";   
-                this.blockchainService.getHashDescription(self.tradeableWalletAddress,
-                function(hash) {
-                    console.log("Hash sucess: " + hash);
+            }, function(e) {
+                console.log("Buy error: " + e);
+                self.errorFront = "It was not possible to recover the Price of this address. Maybe it is not a Tradeable Wallet.";                
+                self.priceInGWei = "N/A";
+            });
 
-                    if (hash) {
+            self.description = "";   
+            this.blockchainService.getHashDescription(self.tradeableWalletAddress,
+            function(hash) {
+                console.log("Hash sucess: " + hash);
 
-                        self.descriptionService.get(hash).subscribe(
-                            data => {
-                                if (data) {
-                                    self.description = data;
-                                    console.log("data from ipfs");
-                                    console.log(data);
+                if (hash) {
 
-                                }
-                                else {
-                                    console.log("no data");
-                                }
-                            },
-                            error => {
-                                console.log("error getFile");
-                                console.log(error);
-                            });
+                    self.descriptionService.get(hash).subscribe(
+                        data => {
+                            if (data) {
+                                self.description = data;
+                                console.log("data from ipfs");
+                                console.log(data);
 
-                    }  
+                            }
+                            else {
+                                console.log("no data");
+                            }
+                        },
+                        error => {
+                            console.log("error getFile");
+                            console.log(error);
+                        });
 
-                }, function(e) {
-                    console.log("Hash error: " + e);
-                });
+                }  
 
+            }, function(e) {
+                console.log("Hash error: " + e);
+            });
 
-                this.blockchainService.getPercentualFee(self.tradeableWalletAddress,
-                function(result) {
-                    self.percentualFee = result;
-                }, function(error) {
-                    console.error("could not retrieve percentual fee");
-                });
-
-
-            } //close if checking valid address
       }
   }
 

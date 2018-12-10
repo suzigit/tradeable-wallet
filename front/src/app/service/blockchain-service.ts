@@ -1,6 +1,7 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import {Contract} from './Contract';
+import {BlockchainConnectionError} from './blockchain-connection-error';
 
 declare let require: any;
 
@@ -39,15 +40,23 @@ export class BlockchainService {
     createWeb3() {
 
         if (typeof window.web3 !== 'undefined') {
-
              // Use Mist/MetaMask's provider
             this.web3 = new Web3(window.web3.currentProvider);
 
         } else {
-            console.warn(
-                'Please use a dapp browser like mist or MetaMask plugin for chrome'
-            );
+            throw new BlockchainConnectionError('Please use a dapp browser like mist or MetaMask plugin for chrome');
         }
+
+        this.getAccounts().then(accounts => {
+            let selectedAccount = accounts[0];
+            if (selectedAccount==undefined) {
+                throw new BlockchainConnectionError('No Ethereum account selected');
+            } 
+        }).catch (error => 
+        {
+            throw new BlockchainConnectionError('No access to Ethereum account');
+        });
+
     }
 
     createInitialObjects() {
