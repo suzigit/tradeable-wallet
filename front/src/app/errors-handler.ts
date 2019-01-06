@@ -29,7 +29,9 @@ constructor(
 
 //        let a = <BlockchainConnectionError> error;        
 //        console.error(a.sayHello());
-        return notificationService.notify(error);
+
+//TODO: tratar excecoes levantadas!!!
+//        return notificationService.notify(error);
  /*   }
 
 */

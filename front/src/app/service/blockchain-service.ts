@@ -144,8 +144,13 @@ export class BlockchainService {
 
        console.log("withdrawEth do " + tradeableContractAddr); 
        console.log("hexData " + hexData); 
+  /*
        if (hexData) {
-
+*/
+//TODO: REVER
+       if (!hexData) {
+           hexData = "0x0000";
+       }
             let hexDataInBytes = Web3Utils.hexToBytes(hexData);
             console.log("hexDataInBytes "); 
             console.log(hexDataInBytes); 
@@ -162,7 +167,7 @@ export class BlockchainService {
                     .then (result => fSucess(result))
                     .catch (error => fError(error));
                 }); 
-            
+         /*   
        } 
        else {
 
@@ -172,6 +177,8 @@ export class BlockchainService {
                     
                     let sPriceInGWei = String(valueToWithdrawInGWei);
                     let valueToWithdrawInWei = this.web3.utils.toWei(sPriceInGWei, 'GWei');
+                    console.log("toAddress=" + toAddress);
+                    console.log("valueToWithdrawInWei=" + valueToWithdrawInWei);
 
                     tradeableContract.instance.methods.makeUntrustedEtherTransferToOutside(toAddress, valueToWithdrawInWei)
                     .send ({ from:selectedAccount, gas:500000 })
@@ -180,7 +187,7 @@ export class BlockchainService {
                 }); 
             
        }   
-
+*/
 
     }
 

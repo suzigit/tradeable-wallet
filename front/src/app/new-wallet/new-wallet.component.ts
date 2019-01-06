@@ -27,10 +27,15 @@ export class NewWalletComponent implements OnInit {
         {
             let newSelectedAccount = accounts[0]; 
 
-            if (newSelectedAccount !== self.selectedAccount && newSelectedAccount) {
+            if (!newSelectedAccount) {
+              self.errorFront = "There is no access to an Ethereum account.";      
+            }
+            else if (newSelectedAccount !== self.selectedAccount && newSelectedAccount) {
+              self.errorFront = "";      
               self.selectedAccount = newSelectedAccount;
               console.log(self.selectedAccount);
             }
+
         }), 1000});
 
       this.newTradeableWalletAddress = null;
